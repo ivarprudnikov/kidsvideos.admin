@@ -1,0 +1,10 @@
+.tmp
+.sass-cache
+.idea
+*.DS_Store
+bower_components
+dev/styles/core.css
+dist
+.elasticbeanstalk
+node_modules
+npm-debug.log
