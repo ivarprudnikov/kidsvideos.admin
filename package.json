@@ -1,37 +1,18 @@
 {
-  "name" : "kidsvideos.admin",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/ivarprudnikov/kidsvideos.io.underconstruction"
-  },
+  "name": "kidsvideos.admin",
+  "version": "0.0.1",
   "private": true,
-  "version" : "1.0.0",
-  "engines" : {
-    "node" : ">=1.0",
-    "npm" : "1.2.x"
+  "scripts": {
+    "start": "node ./bin/www"
   },
-  "scripts" : {
-    "start" : "grunt server"
-  },
-  "dependencies" : {},
-  "devDependencies" : {
-    "grunt" : "*",
-    "grunt-contrib-less" : "*",
-    "grunt-contrib-copy" : "*",
-    "grunt-contrib-concat" : "*",
-    "grunt-contrib-cssmin" : "*",
-    "grunt-contrib-connect" : "*",
-    "grunt-contrib-clean" : "*",
-    "grunt-contrib-htmlmin" : "*",
-    "grunt-contrib-imagemin" : "*",
-    "grunt-contrib-watch" : "*",
-    "grunt-autoprefixer" : "*",
-    "grunt-usemin" : "git+https://git@github.com/ivarprudnikov/grunt-usemin.git",
-    "grunt-svgmin" : "*",
-    "grunt-filerev" : "*",
-    "grunt-open" : "*",
-    "load-grunt-tasks" : "*",
-    "connect-livereload" : "*",
-    "time-grunt" : "*"
+  "dependencies": {
+    "express": "~4.2.0",
+    "static-favicon": "~1.0.0",
+    "morgan": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "body-parser": "~1.0.0",
+    "debug": "~0.7.4",
+    "jade": "~1.3.0",
+    "less-middleware": "1.0.x"
   }
 }
