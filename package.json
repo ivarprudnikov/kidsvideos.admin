@@ -3,8 +3,30 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "grunt server"
+  },
+  "engines" : {
+    "node" : ">=1.0",
+    "npm" : "1.2.x"
   },
   "dependencies": {
+    "grunt" : "*",
+    "grunt-contrib-less" : "*",
+    "grunt-contrib-copy" : "*",
+    "grunt-contrib-concat" : "*",
+    "grunt-contrib-cssmin" : "*",
+    "grunt-contrib-connect" : "*",
+    "grunt-contrib-clean" : "*",
+    "grunt-contrib-htmlmin" : "*",
+    "grunt-contrib-imagemin" : "*",
+    "grunt-contrib-watch" : "*",
+    "grunt-autoprefixer" : "*",
+    "grunt-usemin" : "git+https://git@github.com/ivarprudnikov/grunt-usemin.git",
+    "grunt-svgmin" : "*",
+    "grunt-filerev" : "*",
+    "grunt-open" : "*",
+    "load-grunt-tasks" : "*",
+    "connect-livereload" : "*",
+    "time-grunt" : "*"
   }
 }
