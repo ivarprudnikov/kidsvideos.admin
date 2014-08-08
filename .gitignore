@@ -1,10 +1,12 @@
+dist
 .tmp
 .sass-cache
 .idea
 *.DS_Store
-bower_components
-dev/styles/core.css
-dist
-.elasticbeanstalk
-node_modules
+dev/bower_components/
+dev/apps/*/styles/core.css
+dev/**/generatedTemplates.js
+prod/
+.elasticbeanstalk/
+node_modules/
 npm-debug.log

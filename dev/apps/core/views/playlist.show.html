@@ -1,0 +1,21 @@
+<div class="container">
+
+    <div class="page-header">
+        <h1>{{ playlist.title || 'Playlist view' }}
+            <button ng-if="playlist" class="btn btn-default pull-right" ui-sref="^.edit({id:playlist._id})">Edit</button>
+        </h1>
+    </div>
+
+    <div ng-if="loadingMessage" class="alert alert-warning">{{loadingMessage}}</div>
+
+    <div ng-if="playlist">
+        <p class="lead" ng-if="playlist.description">{{playlist.description}}</p>
+        <div ng-if="playlist.videos && playlist.videos.length">
+            Videos OOOOOooooo
+        </div>
+        <div ng-if="!playlist.videos || !playlist.videos.length">
+            No videos found
+        </div>
+    </div>
+
+</div>

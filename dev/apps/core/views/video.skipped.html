@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Skipped videos</h1>
+        </div>
+    </div>
+
+    <hr>
+
+    <div ng-if="results == null" class="alert alert-info">No results</div>
+    <div ng-if="results != null && results.items && !results.items.length" class="alert alert-warning">Nothing found</div>
+    <div ng-if="loadingMessage" class="alert alert-warning">{{loadingMessage}}</div>
+
+    <div ng-if="results && results.items">
+
+        <div class="row" ng-repeat="(itemIdx,item) in results.items" ng-if="itemIdx % 4 == 0">
+
+            <div class="col-sm-3" ng-repeat="elIdx in [0,1,2,3]" ng-if="results.items[itemIdx+elIdx]">
+                <result-small
+                        image-url="results.items[itemIdx+elIdx].image[0].url"
+                        on-image-click="previewVideo(results.items[itemIdx+elIdx].id)"
+                        title="results.items[itemIdx+elIdx].displayName"
+                        on-title-click="previewVideo(results.items[itemIdx+elIdx].id)"
+                        status="results.items[itemIdx+elIdx].isApproved ? 'approved' : results.items[itemIdx+elIdx].isSkipped ? 'skipped' : results.items[itemIdx+elIdx].isPending ? 'pending' : '' "
+                        actions="{'Set approved':'setApproved(itemIdx+elIdx)','Set skipped':'setSkipped(itemIdx+elIdx)', 'Set pending':'setPending(itemIdx+elIdx)'}"
+                        ></result-small>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <a ng-if="results.links.prev" class="btn btn-default" ng-click="prev()">Prev</a>
+    <a ng-if="results.links.next" class="btn btn-default" ng-click="next()">Next</a>
+
+</div>
