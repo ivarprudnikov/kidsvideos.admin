@@ -11,176 +11,105 @@
     <!-- build:css core/styles/core.css -->
     <link rel="stylesheet" href="core/styles/core.css">
     <!-- endbuild -->
-
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'XX-XXXXXXXX-X', 'auto');
-    </script>
 </head>
 
 <body class="body">
 
-<header id="header" class="ui-view-container" ui-view="header" autoscroll="false"></header>
+<div ng-controller="HeaderController" class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <img alt="kidsvideos.io" src="_shared/images/kidsvideos.io_logo-white-beta.svg"
+                     onerror="this.src='images/kidsvideos.io_logo-white-beta.png'"/>
+            </a>
+        </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-if="hasToken()">
+                    <a ui-sref="main.home">Admin</a>
+                </li>
+                <li class="dropdown" ng-if="hasToken()">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Videos <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="video.approved">Approved</a></li>
+                        <li><a ui-sref="video.pending">Pending</a></li>
+                        <li><a ui-sref="video.skipped">Skipped</a></li>
+                        <li><a ui-sref="video.search">Search</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" ng-if="hasToken()">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Playlists <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="playlist.list">List</a></li>
+                        <li><a ui-sref="playlist.create">Create</a></li>
+                    </ul>
+                </li>
+                <li ng-if="!hasToken()">
+                    <a href="#">Sign in</a>
+                </li>
+                <li ng-if="hasToken()">
+                    <a ng-click="signOut()">Sign out</a>
+                </li>
+            </ul>
+
+    </div>
+</div>
 
 <div class="main-content" ng-class="stateName">
     <div class="main page-wrapper ui-view-container" ui-view="main" autoscroll="false"></div>
 </div>
 
 
-
-<section class="main-content">
-
-    <img src="_shared/images/kidsvideos.io_logo-white-beta.svg"
-         onerror="this.src='images/kidsvideos.io_logo-white-beta.png'"/>
-
-    <h1 class="service-name sr-only">kidsvideos.io <span>beta</span></h1>
-
-    <div class="divider">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <p>I am in active development</p>
-
-
-    <div id="loginLinks"></div>
-
-
-</section>
-
-<footer class="footer-content">
-    <ul class="">
-        <li>&copy; 2014</li>
-        <li><a href="https://github.com/ivarprudnikov/kidsvideos.admin">Source code on Github</a></li>
-    </ul>
-</footer>
-
 </body>
 
-
+<!-- build:js core/scripts/vendor.js -->
 <script src="../vendor_components/easyXDM.debug.js"></script>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/uri.js/src/URI.js"></script>
+<script src="../bower_components/underscore/underscore.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-local-storage/angular-local-storage.js"></script>
+<script src="../bower_components/angular-resource/angular-resource.js"></script>
+<script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="../bower_components/angular-ui-utils/ui-utils.js"></script>
+<script src="../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-touch/angular-touch.js"></script>
+<script src="../bower_components/hammerjs/hammer.js"></script>
+<!-- endbuild -->
 
-<script>
-    var AUTH = (function (window, easyXDM) {
+<!-- build:js core/scripts/tpls.js -->
+<script src="_shared/scripts/generatedTemplates.js"></script>
+<!-- endbuild -->
 
-        var plugin = {
-            proxy : null,
-            win : null,
-            winName : 'authentication',
-            windowFeatures : 'width=400, height=400, menubar=no, location=no, resizable=no, scrollbars=no, status=no"',
-            needsAfter : false,
-            remote : '',
-            timeout : null
-        };
+<!-- build:js core/scripts/app.js -->
+<script src="_shared/scripts/com.ivarprudnikov.ng.config.js"></script>
+<script src="_shared/scripts/com.ivarprudnikov.js.resize.js"></script>
+<script src="_shared/scripts/com.ivarprudnikov.ng.youtube.js"></script>
+<script src="_shared/scripts/com.ivarprudnikov.ng.validation.js"></script>
+<script src="_shared/scripts/com.ivarprudnikov.ng.search.js"></script>
+<script src="_shared/scripts/com.ivarprudnikov.ng.auth.js"></script>
 
-        plugin.open = function (providerName) {
+<script src="core/scripts/app.js"></script>
 
-            if (plugin.win) {
-                plugin.win.close();
-            }
+<script src="core/scripts/factories/VideoFactory.js"></script>
+<script src="core/scripts/factories/VideoActivityFactory.js"></script>
+<script src="core/scripts/factories/PlaylistFactory.js"></script>
 
-            plugin.win = window.open('http://localhost:3000/api/auth/blank', plugin.winName, plugin.windowFeatures);
-            plugin.timeout = setTimeout(function () {
-                plugin.proxy.open(providerName, plugin.winName);
-            }, 300);
+<script src="core/scripts/controllers/HeaderController.js"></script>
+<script src="core/scripts/controllers/HomeController.js"></script>
 
-        };
+<script src="core/scripts/controllers/VideoController.js"></script>
+<script src="core/scripts/controllers/ApprovedVideosController.js"></script>
+<script src="core/scripts/controllers/PendingVideosController.js"></script>
+<script src="core/scripts/controllers/SkippedVideosController.js"></script>
+<script src="core/scripts/controllers/VideoPreviewController.js"></script>
 
-        plugin.proxy = new easyXDM.Rpc({
-                    remote : "http://localhost:3000/api/auth/login", // the path to the provider
-                    onReady : function () {
-                        plugin.proxy.getAvailableProviders(function (response) {
-
-                            plugin.response = response;
-
-                            var wrapperEl = document.getElementById("loginLinks");
-
-                            for (var i = 0; i < response.length; i++) {
-                                var btn = document.createElement("button");
-                                btn.value = response[i].name;
-                                btn.innerText = response[i].name;
-                                btn.type = "button"
-                                btn.setAttribute('onclick', 'AUTH.open("' + response[i].name + '");');
-                                wrapperEl.appendChild(btn)
-                            }
-
-                        }, function (errorObj) {
-                            console.log("getAvailableProviders errorObj", errorObj)
-                        });
-                    }
-                },
-                {
-                    local : {
-                        postMessage : function (data) {
-                            console.log(">>> data", data)
-                        }
-                    },
-                    remote : {
-                        getAvailableProviders : {}, // stub
-                        open : {}
-                    }
-                });
-
-        return plugin;
-
-    })(window, easyXDM)
-
-</script>
-
-
-            <!-- build:js core/scripts/vendor.js -->
-            <script src="../bower_components/jquery/dist/jquery.js"></script>
-            <script src="../bower_components/uri.js/src/URI.js"></script>
-            <script src="../bower_components/underscore/underscore.js"></script>
-            <script src="../bower_components/angular/angular.js"></script>
-            <script src="../bower_components/angular-local-storage/angular-local-storage.js"></script>
-            <script src="../bower_components/angular-resource/angular-resource.js"></script>
-            <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-            <script src="../bower_components/angular-ui-utils/ui-utils.js"></script>
-            <script src="../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
-            <script src="../bower_components/angular-animate/angular-animate.js"></script>
-            <script src="../bower_components/angular-touch/angular-touch.js"></script>
-            <script src="../bower_components/hammerjs/hammer.js"></script>
-            <!-- endbuild -->
-
-            <!-- build:js core/scripts/tpls.js -->
-            <script src="_shared/scripts/generatedTemplates.js"></script>
-            <!-- endbuild -->
-
-            <!-- build:js core/scripts/app.js -->
-            <script src="_shared/scripts/com.ivarprudnikov.js.resize.js"></script>
-            <script src="_shared/scripts/com.ivarprudnikov.ng.youtube.js"></script>
-            <script src="_shared/scripts/com.ivarprudnikov.ng.validation.js"></script>
-            <script src="_shared/scripts/com.ivarprudnikov.ng.search.js"></script>
-            <script src="_shared/scripts/com.ivarprudnikov.ng.auth.js"></script>
-
-            <script src="core/scripts/app.js"></script>
-
-            <script src="core/scripts/factories/VideoFactory.js"></script>
-            <script src="core/scripts/factories/VideoActivityFactory.js"></script>
-            <script src="core/scripts/factories/PlaylistFactory.js"></script>
-
-            <script src="core/scripts/controllers/HeaderController.js"></script>
-            <script src="core/scripts/controllers/HomeController.js"></script>
-
-            <script src="core/scripts/controllers/VideoController.js"></script>
-            <script src="core/scripts/controllers/ApprovedVideosController.js"></script>
-            <script src="core/scripts/controllers/PendingVideosController.js"></script>
-            <script src="core/scripts/controllers/SkippedVideosController.js"></script>
-            <script src="core/scripts/controllers/VideoPreviewController.js"></script>
-
-            <script src="core/scripts/controllers/PlaylistListController.js"></script>
-            <script src="core/scripts/controllers/PlaylistShowController.js"></script>
-            <script src="core/scripts/controllers/PlaylistCreateController.js"></script>
-            <script src="core/scripts/controllers/PlaylistEditController.js"></script>
-            <!-- endbuild -->
-
-
-
+<script src="core/scripts/controllers/PlaylistListController.js"></script>
+<script src="core/scripts/controllers/PlaylistShowController.js"></script>
+<script src="core/scripts/controllers/PlaylistCreateController.js"></script>
+<script src="core/scripts/controllers/PlaylistEditController.js"></script>
+<!-- endbuild -->
 
 
 </html>

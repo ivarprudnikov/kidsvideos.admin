@@ -32,6 +32,8 @@
       }
     }
 
+    var logInPromise = null;
+
     return {
 
       hasToken: function(){
@@ -39,8 +41,13 @@
       },
 
       login: function() {
+
+        if(logInPromise) {
+          return logInPromise;
+        }
+
         var deferred = $q.defer();
-        var promise = deferred.promise;
+        var promise = logInPromise = deferred.promise;
 
         preparePromise(promise);
 
@@ -53,11 +60,17 @@
           keyboard: false,
           controller: 'LoginModalController'
         }).result.then(function(token) {
+
+            console.log("$modal success")
+
             // Success
             storeToken(token);
             httpBuffer.retryAll(function(config) { return config; });
             deferred.resolve();
           }, function(error) {
+
+            console.log("$modal error")
+
             // Error
             deleteToken();
             deferred.reject();
@@ -115,32 +128,47 @@
    */
   mod.run(['$templateCache', function($templateCache) {
     $templateCache.put('views/login.html',
-        '<div class="modal-header">\n' +
+        '<div ng-if="formLoginPath || providers.length" class="modal-header">\n' +
         ' <h3 class="modal-title">Sign in</h3>\n' +
         '</div>\n' +
-        '<div class="modal-body">\n' +
-        '<p>Please sign in using one of the available providers</p>'  +
-        ' <form ng-if="formLoginEnabled" role="form">\n' +
+        '<div ng-if="formLoginPath || providers.length" class="modal-body">\n' +
+        ' <form ng-if="formLoginPath" role="form">\n' +
         '   <div class="form-group">\n' +
         '     <label for="username">Username</label>\n' +
-        '     <input type="text" class="form-control" id="username" placeholder="Enter email" ng-model="username">\n' +
+        '     <input type="text" class="form-control" id="username" placeholder="Enter email" ng-model="user.username">\n' +
         '   </div>\n' +
         '   <div class="form-group">\n' +
         '     <label for="password">Password</label>\n' +
-        '     <input type="password" class="form-control" id="password" placeholder="Password" ng-model="password">\n' +
+        '     <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password">\n' +
         '   </div>\n' +
         ' </form>\n' +
+        ' <p ng-if="providers && providers.length">Please sign in using one of the available providers</p>'  +
         ' <button ng-repeat="p in providers" type="button" class="btn btn-block btn-primary" ng-click="open(p.name)">{{p.name}}</button>\n' +
         '</div>\n' +
         '<div class="modal-footer">\n' +
-        // ' <button type="button" class="btn btn-success" ng-click="login()">Login</button>\n' +
-        '</div>\n');
+        ' <button type="button" class="btn btn-link" ng-click="cancelModal()">Cancel</button>' +
+        ' <button ng-if="formLoginPath" type="button" class="btn btn-default" ng-click="login()">Login</button>\n' +
+        '</div>\n' +
+          '<div ng-if="!formLoginPath && !providers.length" class="modal-body">' +
+          '<div class="text-danger">No connection to the server, check if you are connected to internet.</div>' +
+          '</div>');
   }]);
 
-  mod.controller('LoginModalController', ['$scope', '$modalInstance', 'authProviderService', function($scope, $modalInstance, authProviderService) {
+  mod.controller('LoginModalController', ['$window', '$timeout', '$scope', '$modalInstance', 'configuration', '$http',
+    function($window, $timeout, $scope, $modalInstance, configuration, $http) {
 
     $scope.providers = [];
     $scope.formLoginEnabled = false;
+    $scope.formLoginPath = '';
+      $scope.user = {
+        username:'',
+        password:''
+      }
+
+      $scope.$watch('username',function(){
+        console.log("$scope.username",$scope.user)
+      })
+
 
     function onAuthSuccess(token) {
       $timeout(function(){
@@ -149,7 +177,11 @@
     }
 
     function onAuthError() {
-      console.log("modal error callback TODO, data:", data);
+      console.log("modal error callback");
+    }
+
+    $scope.cancelModal = function(){
+      $modalInstance.dismiss();
     }
 
     var auth = {
@@ -165,6 +197,7 @@
     auth.proxy = new easyXDM.Rpc({
       remote : configuration.auth.login, // the path to the page sending provider list
       onReady : function () {
+
         auth.proxy.getAvailableProviders(function (providerList) {
           $timeout(function(){
             $scope.providers = providerList;
@@ -172,6 +205,15 @@
         }, function (errorObj) {
           console.log("getAvailableProviders errorObj", errorObj)
         });
+
+        auth.proxy.formLoginPath(function (formLoginPath) {
+          $timeout(function(){
+            $scope.formLoginPath = formLoginPath;
+          });
+        }, function (errorObj) {
+          console.log("formLoginPath errorObj", errorObj)
+        });
+
       }
     },
     {
@@ -184,6 +226,7 @@
       },
       remote : {
         getAvailableProviders : {},
+        formLoginPath : {},
         open : {}
       }
     });
@@ -193,26 +236,34 @@
         auth.win.close();
       }
       auth.win = $window.open(configuration.auth.blank, auth.winName, auth.windowFeatures);
-      auth.timeout = setTimeout(function () {
-        auth.proxy.open(providerName, auth.winName);
-      }, 300);
+      if(auth.win){
+        auth.timeout = setTimeout(function () {
+          auth.proxy.open(providerName, auth.winName);
+        }, 300);
+      } else {
+        onAuthError();
+      }
+
     };
 
-
-    $scope.username = '';
-    $scope.password = '';
 
     // Actions
 
     $scope.login = function() {
-      $http.post(configuration.api.loginUrl, {
-        username: $scope.username,
-        password: $scope.password
-      }).success(function(data, status, headers, config) {
-        onAuthSuccess(data);
-      }).error(function(data, status, headers, config) {
-        onAuthError();
-      });
+      if($scope.formLoginPath) {
+
+        $http.post($scope.formLoginPath, $scope.user, {
+          headers:{
+            'X-Requested-With':'kidsvideos'
+          }
+        }).success(function (data, status, headers, config) {
+          $scope.username = '';
+          $scope.password = '';
+          onAuthSuccess(data.token);
+        }).error(function (data, status, headers, config) {
+          onAuthError();
+        });
+      }
     };
 
   }]);

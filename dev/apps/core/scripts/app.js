@@ -4,6 +4,7 @@ angular.module('admin.kidsvideos',
   ['com.ivarprudnikov.ng.youtube',
     'com.ivarprudnikov.ng.validation',
     'com.ivarprudnikov.ng.search',
+    'com.ivarprudnikov.ng.auth',
     'ui.router',
     'ui.bootstrap',
     'ngResource',
@@ -14,37 +15,28 @@ angular.module('admin.kidsvideos',
     'appTemplates'
   ])
 
-  .run(function ($rootScope, $timeout, $window, $location) {
+  .run(function ($rootScope, $timeout, $window, $location, authService, $urlRouter) {
 
     $rootScope.menuIsActive = true;
 
     $rootScope.currentState = { name : '' };
 
     $rootScope.$on('$stateChangeStart',
-      function (event, toState, toParams, fromState, fromParams) {
-        $rootScope.currentState.name = toState.name.replace(/\./g, '_');
-        $('body').animate({ scrollTop : 0 }, 100);
-      }
-    );
-
-    $rootScope.$on('$locationChangeSuccess',
-      function (event) {
-        var pagePaths, pagePath;
-
-        pagePaths = $window.location.href.split($window.location.host);
-        if (pagePaths.length > 1) {
-          pagePath = pagePaths[1];
+      function(event, toState, toParams, fromState, fromParams){
+        if(toState && toState.data && toState.data.requireAuth && !authService.hasToken()){
+          event.preventDefault();
+          authService.login().success(function(){
+            $urlRouter.sync();
+          }).error(function(){
+            $window.location.reload();
+          });
         } else {
-          pagePath = '/';
+          $rootScope.currentState.name = toState.name.replace(/\./g, '_');
+          $('body').animate({ scrollTop : 0 }, 100);
         }
-
-        ga('send', {
-          hitType : 'pageview',
-          page    : pagePath
-        });
-
       }
     );
+
   })
 
   .config(['$stateProvider', '$urlRouterProvider',
@@ -59,12 +51,10 @@ angular.module('admin.kidsvideos',
         .state('main', {
           url      : '/main',
           abstract : true,
-          views    : {
-            header : {
-              templateUrl : APP_PATH + 'views/header.html',
-              controller  : 'HeaderController'
-            }
-          }
+          data: {
+            requireAuth: true
+          },
+          views    : {}
         })
         .state('main.home', {
           url   : '',
