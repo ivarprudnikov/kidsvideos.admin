@@ -60,21 +60,20 @@
           keyboard: false,
           controller: 'LoginModalController'
         }).result.then(function(token) {
-
-            console.log("$modal success")
-
-            // Success
-            storeToken(token);
-            httpBuffer.retryAll(function(config) { return config; });
-            deferred.resolve();
-          }, function(error) {
-
-            console.log("$modal error")
-
-            // Error
-            deleteToken();
-            deferred.reject();
-          });
+          console.log("$modal success")
+          storeToken(token);
+          httpBuffer.retryAll(function(config) { return config; });
+          deferred.resolve();
+        }, function(error) {
+          console.log("$modal error");
+          deleteToken();
+          deferred.reject();
+        }).catch(function(error) {
+          deleteToken();
+          deferred.reject();
+        }).finally(function() {
+          logInPromise = null;
+        });
 
         return promise;
       },
@@ -89,33 +88,6 @@
           deleteToken();
           deferred.resolve();
         })
-
-        return promise;
-      },
-
-      validate: function(options) {
-
-        var deferred = $q.defer();
-        var promise = deferred.promise;
-        preparePromise(promise);
-
-        var defaults = {
-          ignoreAuthModule:true,
-          headers: {}
-        };
-        defaults.headers[configuration.api.tokenHeaderName] = $window.sessionStorage.token;
-
-        var overrides = {};
-        if(angular.isObject(options)){
-          overrides = options;
-        }
-        angular.extend(defaults,overrides)
-
-        $http.post(configuration.api.validateUrl, {}, defaults).success(function(data, status, headers, config) {
-          deferred.resolve(data);
-        }).error(function(data, status, headers, config) {
-          deferred.reject();
-        });
 
         return promise;
       }
@@ -274,7 +246,7 @@
         request: function(config) {
           config.headers = config.headers || {};
           if($window.sessionStorage.token) {
-            config.headers[configuration.api.tokenHeaderName] = $window.sessionStorage.token;
+            config.headers[configuration.auth.tokenHeaderName] = 'Bearer ' + $window.sessionStorage.token;
           }
           return config;
         },

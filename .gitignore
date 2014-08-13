@@ -5,7 +5,7 @@ dist
 *.DS_Store
 dev/bower_components/
 dev/apps/*/styles/core.css
-dev/**/generatedTemplates.js
+dev/**/generated*.js
 prod/
 .elasticbeanstalk/
 node_modules/

@@ -22,7 +22,8 @@ module.exports = function (grunt) {
   var yeomanConfig = {
     app      : 'dev',
     dist     : 'prod',
-    tplsFile : 'generatedTemplates.js'
+    tplsFile : 'generatedTemplates.js',
+    cfgFile  : 'generatedConfiguration.js'
   };
 
   grunt.initConfig({
@@ -387,6 +388,23 @@ module.exports = function (grunt) {
       }
     },
 
+    // environment specific configuration
+    ///////////////////////////////////////
+    replace: {
+      dev: {
+        options: {
+          patterns: [{ json: grunt.file.readJSON('./package.json').appConf.dev }]
+        },
+        files: { '<%= yeoman.app %>/apps/_shared/scripts/<%= yeoman.cfgFile %>':'./configuration.template.js' }
+      },
+      dist: {
+        options: {
+          patterns: [{ json: grunt.file.readJSON('./package.json').appConf.prod }]
+        },
+        files: { '<%= yeoman.app %>/apps/_shared/scripts/<%= yeoman.cfgFile %>':'./configuration.template.js' }
+      }
+    },
+
     // concurrent tasks
     ///////////////////////////////////////////////
     concurrent  : {
@@ -413,6 +431,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'replace:dev',      // prepare config
       'less',
       'copy:styles',
       'autoprefixer',
@@ -427,6 +446,7 @@ module.exports = function (grunt) {
     'jshint',           // code quality check
     'jscs',             // code quality check
     'clean:server',     // erase .tmp
+    'replace:dev',      // prepare config
     'less',             // generates css in dev
     'copy:styles',      // copy css to .tmp
     'autoprefixer',     // adds prefixes in .tmp
@@ -439,6 +459,7 @@ module.exports = function (grunt) {
     'jshint',           // code quality check
     'jscs',             // code quality check
     'clean:dist',       // cleans .tmp & dist
+    'replace:dist',     // prepare config
     'less',             // generates css in dev
     'autoprefixer',     // adds prefixes in dev
     'ngtemplates',      // compress all template files into single ng module cache

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('admin.kidsvideos')
-  .factory('PlaylistFactory', ['$resource', function ($resource) {
+  .factory('PlaylistFactory', ['$resource','configuration', function ($resource,configuration) {
 
-    return $resource('/api/client/playlist/:action/:id', {}, {
+    return $resource( configuration.api.public.playlistPath + '/:action/:id', {}, {
       list   : { method : 'GET', params : {action : 'list'} },
       show   : { method : 'GET', params : {action : 'show'} },
       save   : { method : 'POST', params : {action : 'save'} },

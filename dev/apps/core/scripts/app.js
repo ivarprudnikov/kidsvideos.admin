@@ -1,19 +1,20 @@
 'use strict';
 
-angular.module('admin.kidsvideos',
-  ['com.ivarprudnikov.ng.youtube',
-    'com.ivarprudnikov.ng.validation',
-    'com.ivarprudnikov.ng.search',
-    'com.ivarprudnikov.ng.auth',
-    'ui.router',
-    'ui.bootstrap',
-    'ngResource',
-    'ngAnimate',
-    'ui.keypress',
-    'ui.event',
-    'ngTouch',
-    'appTemplates'
-  ])
+angular.module('admin.kidsvideos', [
+  'com.ivarprudnikov.ng.config',
+  'com.ivarprudnikov.ng.youtube',
+  'com.ivarprudnikov.ng.validation',
+  'com.ivarprudnikov.ng.search',
+  'com.ivarprudnikov.ng.auth',
+  'ui.router',
+  'ui.bootstrap',
+  'ngResource',
+  'ngAnimate',
+  'ui.keypress',
+  'ui.event',
+  'ngTouch',
+  'appTemplates'
+])
 
   .run(function ($rootScope, $timeout, $window, $location, authService, $urlRouter) {
 
@@ -53,8 +54,7 @@ angular.module('admin.kidsvideos',
           abstract : true,
           data: {
             requireAuth: true
-          },
-          views    : {}
+          }
         })
         .state('main.home', {
           url   : '',
@@ -68,13 +68,7 @@ angular.module('admin.kidsvideos',
 
         .state('video', {
           url      : '/video',
-          abstract : true,
-          views    : {
-            header : {
-              templateUrl : APP_PATH + 'views/header.html',
-              controller  : 'HeaderController'
-            }
-          }
+          abstract : true
         })
         .state('video.search', {
           url   : '/search?q&t',
@@ -124,13 +118,7 @@ angular.module('admin.kidsvideos',
 
         .state('playlist', {
           url      : '/playlist',
-          abstract : true,
-          views    : {
-            header : {
-              templateUrl : APP_PATH + 'views/header.html',
-              controller  : 'HeaderController'
-            }
-          }
+          abstract : true
         })
         .state('playlist.list', {
           url   : '/list?query&max&offset&sort&order&isPublic&isApproved&isSkipped&isPending&user',
