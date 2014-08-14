@@ -16,7 +16,7 @@ angular.module('admin.kidsvideos', [
   'appTemplates'
 ])
 
-  .run(function ($rootScope, $timeout, $window, $location, authService, $urlRouter) {
+  .run(function ($rootScope, $timeout, $window, $location, authService, $urlRouter, configuration) {
 
     $rootScope.menuIsActive = true;
 
@@ -29,7 +29,7 @@ angular.module('admin.kidsvideos', [
           authService.login().success(function(){
             $urlRouter.sync();
           }).error(function(){
-            $window.location.reload();
+            $window.location.replace(configuration.app.baseUrl);
           });
         } else {
           $rootScope.currentState.name = toState.name.replace(/\./g, '_');

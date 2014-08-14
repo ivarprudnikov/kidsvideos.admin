@@ -4,9 +4,11 @@
   "private": true,
   "appConf" : {
     "dev":{
+      "appUrl": "http://localhost:9000/apps",
       "apiUrl": "http://localhost:3000"
     },
     "prod":{
+      "appUrl": "http://admin.kidsvideos.io",
       "apiUrl": "http://api.kidsvideos.io"
     }
   },
