@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
+angular.module('io.kidsvideos.admin.main')
   .factory('VideoFactory', ['$resource','configuration', function ($resource,configuration) {
 
     return {

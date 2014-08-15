@@ -2,7 +2,7 @@
 
 /* jshint eqeqeq:false,eqnull:true */
 
-angular.module('admin.kidsvideos')
+angular.module('io.kidsvideos.admin.main')
   .controller('PlaylistListController', ['$scope', '$state', '$stateParams', '$interval', 'PlaylistFactory',
     function ($scope, $state, $stateParams, $interval, PlaylistFactory) {
 

@@ -1,20 +1,22 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
-  .controller('VideoController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
+angular.module('io.kidsvideos.admin.main')
+  .controller('SkippedVideosController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
     function (VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams) {
 
-      var messageInterval = null,
-        msg0 = 'Loading search results',
+      var
+        messageInterval = null,
+        msg0 = 'Loading results',
         msg1 = 'Still loading',
         msg2 = 'Takes longer than usual',
-        msgErr = 'Error occured while loading search results';
-
-      $scope.q = $stateParams.q || '';
-      $scope.t = $stateParams.t || '';
+        msgErr = 'Error occured while loading search results'
+        ;
 
       $scope.loadingMessage = '';
       $scope.results = null;
+
+      $scope.max = $stateParams.max || '';
+      $scope.offset = $stateParams.offset || '';
 
       $scope.$watch($stateParams, function () {
         searchForResults();
@@ -46,47 +48,24 @@ angular.module('admin.kidsvideos')
       }
 
       function searchForResults() {
-        if (!$scope.q) {
-          console.log('no query');
-        } else {
-          startLoadingMessage();
-          $scope.results = VideoFactory.search.getAll({query : $scope.q, token : $scope.t}, null, function (responseData, responseHeaders) {
-            stopMessageInterval();
-          }, errorHandler);
-        }
+        startLoadingMessage();
+        $scope.results = VideoFactory.skipped.getAll({max : $scope.max, offset : $scope.offset}, null, function (responseData, responseHeaders) {
+          stopMessageInterval();
+        }, errorHandler);
       }
 
-      $scope.search = function () {
-        $state.go($state.$current.name, {q : $scope.q});
-      };
-
       $scope.next = function () {
-        var arr, token, params;
+        var params;
         if ($scope.results && $scope.results.links && $scope.results.links.next) {
-
-          arr = $scope.results.links.next.split('/');
-          token = arr[arr.length - 1];
-          params = {q : $scope.q};
-          if (token) {
-            params.t = token;
-          }
-
+          params = URI($scope.results.links.next).query(true);
           $state.go($state.$current.name, params);
-
         }
       };
 
       $scope.prev = function () {
-        var arr, token, params;
+        var params;
         if ($scope.results && $scope.results.links && $scope.results.links.prev) {
-
-          arr = $scope.results.links.prev.split('/');
-          token = arr[arr.length - 1];
-          params = {q : $scope.q};
-          if (token) {
-            params.t = token;
-          }
-
+          params = URI($scope.results.links.prev).query(true);
           $state.go($state.$current.name, params);
         }
       };

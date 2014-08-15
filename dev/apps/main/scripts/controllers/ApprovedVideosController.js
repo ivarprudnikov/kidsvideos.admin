@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
-  .controller('SkippedVideosController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
+/* jshint eqeqeq:false,eqnull:true */
+
+angular.module('io.kidsvideos.admin.main')
+  .controller('ApprovedVideosController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
     function (VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams) {
 
       var
@@ -49,7 +51,7 @@ angular.module('admin.kidsvideos')
 
       function searchForResults() {
         startLoadingMessage();
-        $scope.results = VideoFactory.skipped.getAll({max : $scope.max, offset : $scope.offset}, null, function (responseData, responseHeaders) {
+        $scope.results = VideoFactory.approved.getAll({max : $scope.max, offset : $scope.offset}, null, function (responseData, responseHeaders) {
           stopMessageInterval();
         }, errorHandler);
       }
@@ -71,9 +73,6 @@ angular.module('admin.kidsvideos')
       };
 
       $scope.setApproved = function (itemIdx) {
-
-        /* jshint eqeqeq:false,eqnull:true */
-
         var item = $scope.results.items[itemIdx];
         YoutubeVideoActivityFactory.setActivityApproved(item, function (err, updatedItem) {
           if (err != null) {
@@ -85,9 +84,6 @@ angular.module('admin.kidsvideos')
       };
 
       $scope.setSkipped = function (itemIdx) {
-
-        /* jshint eqeqeq:false,eqnull:true */
-
         var item = $scope.results.items[itemIdx];
         YoutubeVideoActivityFactory.setActivitySkipped(item, function (err, updatedItem) {
           if (err != null) {
@@ -99,9 +95,6 @@ angular.module('admin.kidsvideos')
       };
 
       $scope.setPending = function (itemIdx) {
-
-        /* jshint eqeqeq:false,eqnull:true */
-
         var item = $scope.results.items[itemIdx];
         YoutubeVideoActivityFactory.setActivityPending(item, function (err, updatedItem) {
           if (err != null) {

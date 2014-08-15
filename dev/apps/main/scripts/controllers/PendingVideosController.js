@@ -2,8 +2,8 @@
 
 /* jshint eqeqeq:false,eqnull:true */
 
-angular.module('admin.kidsvideos')
-  .controller('ApprovedVideosController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
+angular.module('io.kidsvideos.admin.main')
+  .controller('PendingVideosController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
     function (VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams) {
 
       var
@@ -51,7 +51,7 @@ angular.module('admin.kidsvideos')
 
       function searchForResults() {
         startLoadingMessage();
-        $scope.results = VideoFactory.approved.getAll({max : $scope.max, offset : $scope.offset}, null, function (responseData, responseHeaders) {
+        $scope.results = VideoFactory.pending.getAll({max : $scope.max, offset : $scope.offset}, null, function (responseData, responseHeaders) {
           stopMessageInterval();
         }, errorHandler);
       }

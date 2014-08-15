@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
+angular.module('io.kidsvideos.admin.main')
   .controller('VideoPreviewController', ['$scope', '$rootScope', '$timeout', '$interval', '$state', '$stateParams',
     function ($scope, $rootScope, $timeout, $interval, $state, $stateParams) {
 

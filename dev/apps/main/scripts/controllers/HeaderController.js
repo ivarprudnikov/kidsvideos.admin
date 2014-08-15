@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
-  .controller('HeaderController', ['$scope', '$window', 'authService',
-    function ($scope, $window, authService) {
+angular.module('io.kidsvideos.admin.main')
+  .controller('HeaderController', ['$scope', '$window', 'authService', 'configuration',
+    function ($scope, $window, authService, configuration) {
 
       $scope.hasToken = function(){
         return authService.hasToken();
@@ -16,7 +16,9 @@ angular.module('admin.kidsvideos')
 
       $scope.signOut = function(){
         authService.logout().success(function(){
-          $window.location.reload();
+          $window.location.replace(configuration.app.baseUrl);
+        }).error(function(){
+          $window.location.replace(configuration.app.baseUrl);
         });
       };
 

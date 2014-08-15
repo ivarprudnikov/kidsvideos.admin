@@ -2,7 +2,7 @@
 
 /* jshint eqeqeq:false,eqnull:true */
 
-angular.module('admin.kidsvideos')
+angular.module('io.kidsvideos.admin.main')
   .factory('YoutubeVideoActivityFactory', ['VideoFactory', '$timeout', function (VideoFactory, $timeout) {
 
     return {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
+angular.module('io.kidsvideos.admin.main')
   .factory('PlaylistFactory', ['$resource','configuration', function ($resource,configuration) {
 
     return $resource( configuration.api.public.playlistPath + '/:action/:id', {}, {

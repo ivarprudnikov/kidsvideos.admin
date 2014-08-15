@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
+angular.module('io.kidsvideos.admin.main')
   .controller('PlaylistCreateController', ['$scope', '$state', '$stateParams', 'PlaylistFactory',
     function ($scope, $state, $stateParams, PlaylistFactory) {
 

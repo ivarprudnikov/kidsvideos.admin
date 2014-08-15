@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('admin.kidsvideos')
+angular.module('io.kidsvideos.admin.main')
   .controller('HomeController', ['$scope', '$rootScope', '$timeout', function ($scope, $rootScope, $timeout, YoutubePlayerService) {
 
     $scope.doIt = function (n) {

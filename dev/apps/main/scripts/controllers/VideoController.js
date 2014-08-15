@@ -1,24 +1,20 @@
 'use strict';
 
-/* jshint eqeqeq:false,eqnull:true */
-
-angular.module('admin.kidsvideos')
-  .controller('PendingVideosController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
+angular.module('io.kidsvideos.admin.main')
+  .controller('VideoController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
     function (VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams) {
 
-      var
-        messageInterval = null,
-        msg0 = 'Loading results',
+      var messageInterval = null,
+        msg0 = 'Loading search results',
         msg1 = 'Still loading',
         msg2 = 'Takes longer than usual',
-        msgErr = 'Error occured while loading search results'
-        ;
+        msgErr = 'Error occured while loading search results';
+
+      $scope.q = $stateParams.q || '';
+      $scope.t = $stateParams.t || '';
 
       $scope.loadingMessage = '';
       $scope.results = null;
-
-      $scope.max = $stateParams.max || '';
-      $scope.offset = $stateParams.offset || '';
 
       $scope.$watch($stateParams, function () {
         searchForResults();
@@ -50,29 +46,55 @@ angular.module('admin.kidsvideos')
       }
 
       function searchForResults() {
-        startLoadingMessage();
-        $scope.results = VideoFactory.pending.getAll({max : $scope.max, offset : $scope.offset}, null, function (responseData, responseHeaders) {
-          stopMessageInterval();
-        }, errorHandler);
+        if (!$scope.q) {
+          console.log('no query');
+        } else {
+          startLoadingMessage();
+          $scope.results = VideoFactory.search.getAll({query : $scope.q, token : $scope.t}, null, function (responseData, responseHeaders) {
+            stopMessageInterval();
+          }, errorHandler);
+        }
       }
 
+      $scope.search = function () {
+        $state.go($state.$current.name, {q : $scope.q});
+      };
+
       $scope.next = function () {
-        var params;
+        var arr, token, params;
         if ($scope.results && $scope.results.links && $scope.results.links.next) {
-          params = URI($scope.results.links.next).query(true);
+
+          arr = $scope.results.links.next.split('/');
+          token = arr[arr.length - 1];
+          params = {q : $scope.q};
+          if (token) {
+            params.t = token;
+          }
+
           $state.go($state.$current.name, params);
+
         }
       };
 
       $scope.prev = function () {
-        var params;
+        var arr, token, params;
         if ($scope.results && $scope.results.links && $scope.results.links.prev) {
-          params = URI($scope.results.links.prev).query(true);
+
+          arr = $scope.results.links.prev.split('/');
+          token = arr[arr.length - 1];
+          params = {q : $scope.q};
+          if (token) {
+            params.t = token;
+          }
+
           $state.go($state.$current.name, params);
         }
       };
 
       $scope.setApproved = function (itemIdx) {
+
+        /* jshint eqeqeq:false,eqnull:true */
+
         var item = $scope.results.items[itemIdx];
         YoutubeVideoActivityFactory.setActivityApproved(item, function (err, updatedItem) {
           if (err != null) {
@@ -84,6 +106,9 @@ angular.module('admin.kidsvideos')
       };
 
       $scope.setSkipped = function (itemIdx) {
+
+        /* jshint eqeqeq:false,eqnull:true */
+
         var item = $scope.results.items[itemIdx];
         YoutubeVideoActivityFactory.setActivitySkipped(item, function (err, updatedItem) {
           if (err != null) {
@@ -95,6 +120,9 @@ angular.module('admin.kidsvideos')
       };
 
       $scope.setPending = function (itemIdx) {
+
+        /* jshint eqeqeq:false,eqnull:true */
+
         var item = $scope.results.items[itemIdx];
         YoutubeVideoActivityFactory.setActivityPending(item, function (err, updatedItem) {
           if (err != null) {

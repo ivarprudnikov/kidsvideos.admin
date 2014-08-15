@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('admin.kidsvideos', [
+angular.module('io.kidsvideos.admin.main', [
   'com.ivarprudnikov.ng.config',
   'com.ivarprudnikov.ng.youtube',
   'com.ivarprudnikov.ng.validation',
@@ -43,7 +43,7 @@ angular.module('admin.kidsvideos', [
   .config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
 
-      var APP_PATH = 'apps/core/';
+      var APP_PATH = 'apps/main/';
 
       $urlRouterProvider.otherwise('/main');
 
@@ -68,7 +68,10 @@ angular.module('admin.kidsvideos', [
 
         .state('video', {
           url      : '/video',
-          abstract : true
+          abstract : true,
+          data: {
+            requireAuth: true
+          }
         })
         .state('video.search', {
           url   : '/search?q&t',
@@ -118,7 +121,10 @@ angular.module('admin.kidsvideos', [
 
         .state('playlist', {
           url      : '/playlist',
-          abstract : true
+          abstract : true,
+          data: {
+            requireAuth: true
+          }
         })
         .state('playlist.list', {
           url   : '/list?query&max&offset&sort&order&isPublic&isApproved&isSkipped&isPending&user',
