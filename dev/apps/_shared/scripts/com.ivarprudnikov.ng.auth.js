@@ -63,6 +63,7 @@
         $modal.open({
           templateUrl: 'views/login.html',
           backdrop: 'static',
+          size: 'sm',
           keyboard: false,
           controller: 'LoginModalController',
           resolve: {
@@ -115,11 +116,11 @@
       '<div ng-if="formLoginPath || providers.length" class="modal-body">\n' +
       ' <form ng-if="formLoginPath" role="form">\n' +
       '   <div class="form-group">\n' +
-      '     <label for="username">Username</label>\n' +
-      '     <input type="text" class="form-control" id="username" placeholder="Enter email" ng-model="user.username">\n' +
+      '     <label for="username" class="sr-only">Username</label>\n' +
+      '     <input type="text" class="form-control" id="username" placeholder="Username" ng-model="user.username">\n' +
       '   </div>\n' +
       '   <div class="form-group">\n' +
-      '     <label for="password">Password</label>\n' +
+      '     <label for="password" class="sr-only">Password</label>\n' +
       '     <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password">\n' +
       '   </div>\n' +
       ' </form>\n' +
