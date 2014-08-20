@@ -10,7 +10,9 @@
     auth: {
       blank: '@@apiUrl/api/auth/blank',
       login: '@@apiUrl/api/auth/login',
-      tokenHeaderName: 'Authorization'
+      tokenHeaderName: 'Authorization',
+      socialEnabled: false,
+      formEnabled: true
     },
     api: {
       baseUrl: '@@apiUrl',

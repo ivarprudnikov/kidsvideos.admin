@@ -40,11 +40,17 @@
         return tokenExists();
       },
 
-      login: function() {
+      login: function(options) {
 
         if(logInPromise) {
           return logInPromise;
         }
+
+        var defaults = {
+          form: configuration.auth.formEnabled,
+          social: configuration.auth.socialEnabled
+        };
+        angular.extend(defaults,options)
 
         var deferred = $q.defer();
         var promise = logInPromise = deferred.promise;
@@ -58,7 +64,10 @@
           templateUrl: 'views/login.html',
           backdrop: 'static',
           keyboard: false,
-          controller: 'LoginModalController'
+          controller: 'LoginModalController',
+          resolve: {
+            data: function(){ return defaults; }
+          }
         }).result.then(function(token) {
           console.log("$modal success")
           storeToken(token);
@@ -100,47 +109,45 @@
    */
   mod.run(['$templateCache', function($templateCache) {
     $templateCache.put('views/login.html',
-        '<div ng-if="formLoginPath || providers.length" class="modal-header">\n' +
-        ' <h3 class="modal-title">Sign in</h3>\n' +
-        '</div>\n' +
-        '<div ng-if="formLoginPath || providers.length" class="modal-body">\n' +
-        ' <form ng-if="formLoginPath" role="form">\n' +
-        '   <div class="form-group">\n' +
-        '     <label for="username">Username</label>\n' +
-        '     <input type="text" class="form-control" id="username" placeholder="Enter email" ng-model="user.username">\n' +
-        '   </div>\n' +
-        '   <div class="form-group">\n' +
-        '     <label for="password">Password</label>\n' +
-        '     <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password">\n' +
-        '   </div>\n' +
-        ' </form>\n' +
-        ' <p ng-if="providers && providers.length">Please sign in using one of the available providers</p>'  +
-        ' <button ng-repeat="p in providers" type="button" class="btn btn-block btn-primary" ng-click="open(p.name)">{{p.name}}</button>\n' +
-        '</div>\n' +
-        '<div class="modal-footer">\n' +
-        ' <button type="button" class="btn btn-link" ng-click="cancelModal()">Cancel</button>' +
-        ' <button ng-if="formLoginPath" type="button" class="btn btn-default" ng-click="login()">Login</button>\n' +
-        '</div>\n' +
-          '<div ng-if="!formLoginPath && !providers.length" class="modal-body">' +
-          '<div class="text-danger">No connection to the server, check if you are connected to internet.</div>' +
-          '</div>');
+      '<div class="modal-header">\n' +
+      ' <h3 class="modal-title">Sign in</h3>\n' +
+      '</div>\n' +
+      '<div ng-if="formLoginPath || providers.length" class="modal-body">\n' +
+      ' <form ng-if="formLoginPath" role="form">\n' +
+      '   <div class="form-group">\n' +
+      '     <label for="username">Username</label>\n' +
+      '     <input type="text" class="form-control" id="username" placeholder="Enter email" ng-model="user.username">\n' +
+      '   </div>\n' +
+      '   <div class="form-group">\n' +
+      '     <label for="password">Password</label>\n' +
+      '     <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password">\n' +
+      '   </div>\n' +
+      ' </form>\n' +
+      ' <p ng-if="providers && providers.length">Please sign in using one of the available providers</p>'  +
+      ' <button ng-repeat="p in providers" type="button" class="btn btn-block btn-primary" ng-click="open(p.name)">{{p.name}}</button>\n' +
+      '</div>\n' +
+
+      '<div ng-if="!formLoginPath && !providers.length" class="modal-body">' +
+      '  <div class="text-danger">No connection to the server, check if you are connected to internet.</div>' +
+      '</div>' +
+
+      '<div class="modal-footer">\n' +
+      ' <button type="button" class="btn btn-link" ng-click="cancelModal()">Cancel</button>' +
+      ' <button ng-if="formLoginPath" type="button" class="btn btn-default" ng-click="login()">Login</button>\n' +
+      '</div>'
+      );
   }]);
 
-  mod.controller('LoginModalController', ['$window', '$timeout', '$scope', '$modalInstance', 'configuration', '$http',
-    function($window, $timeout, $scope, $modalInstance, configuration, $http) {
+  mod.controller('LoginModalController', ['$window', '$timeout', '$scope', '$modalInstance', 'configuration', '$http', 'data',
+    function($window, $timeout, $scope, $modalInstance, configuration, $http, DATA) {
 
     $scope.providers = [];
     $scope.formLoginEnabled = false;
     $scope.formLoginPath = '';
-      $scope.user = {
-        username:'',
-        password:''
-      }
-
-      $scope.$watch('username',function(){
-        console.log("$scope.username",$scope.user)
-      })
-
+    $scope.user = {
+      username:'',
+      password:''
+    };
 
     function onAuthSuccess(token) {
       $timeout(function(){
@@ -170,21 +177,25 @@
       remote : configuration.auth.login, // the path to the page sending provider list
       onReady : function () {
 
-        auth.proxy.getAvailableProviders(function (providerList) {
-          $timeout(function(){
-            $scope.providers = providerList;
+        if(DATA.social) {
+          auth.proxy.getAvailableProviders(function (providerList) {
+            $timeout(function () {
+              $scope.providers = providerList;
+            });
+          }, function (errorObj) {
+            console.log("getAvailableProviders errorObj", errorObj)
           });
-        }, function (errorObj) {
-          console.log("getAvailableProviders errorObj", errorObj)
-        });
+        }
 
-        auth.proxy.formLoginPath(function (formLoginPath) {
-          $timeout(function(){
-            $scope.formLoginPath = formLoginPath;
+        if(DATA.form) {
+          auth.proxy.formLoginPath(function (formLoginPath) {
+            $timeout(function () {
+              $scope.formLoginPath = formLoginPath;
+            });
+          }, function (errorObj) {
+            console.log("formLoginPath errorObj", errorObj)
           });
-        }, function (errorObj) {
-          console.log("formLoginPath errorObj", errorObj)
-        });
+        }
 
       }
     },
@@ -290,19 +301,12 @@
     }
 
     return {
-      /**
-       * Appends HTTP request configuration object with deferred response attached to buffer.
-       */
       append: function(config, deferred) {
         buffer.push({
           config: config,
           deferred: deferred
         });
       },
-
-      /**
-       * Abandon or reject (if reason provided) all the buffered requests.
-       */
       rejectAll: function(reason) {
         if (reason) {
           for (var i = 0; i < buffer.length; ++i) {
@@ -311,10 +315,6 @@
         }
         buffer = [];
       },
-
-      /**
-       * Retries all the buffered requests clears the buffer.
-       */
       retryAll: function(updater) {
         for (var i = 0; i < buffer.length; ++i) {
           retryHttpRequest(updater(buffer[i].config), buffer[i].deferred);
