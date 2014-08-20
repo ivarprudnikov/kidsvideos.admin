@@ -17,16 +17,9 @@
 
 <div ng-controller="HeaderController" class="navbar navbar-inverse navbar-static-top" role="navigation">
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">
-                <img alt="kidsvideos.io" src="_shared/images/kidsvideos.io_logo-white-beta.svg"
-                     onerror="this.src='images/kidsvideos.io_logo-white-beta.png'"/>
-            </a>
-        </div>
-
         <ul class="nav navbar-nav navbar-right">
             <li ng-if="hasToken()">
-                <a href="main/index.html">Admin</a>
+                <a href="main/index.html">Console</a>
             </li>
             <li ng-if="!hasToken()">
                 <a ng-click="signIn()">Sign in</a>
@@ -35,11 +28,38 @@
                 <a ng-click="signOut()">Sign out</a>
             </li>
         </ul>
-
     </div>
 </div>
 
+<section class="main-content">
 
+    <h1 class="service-name sr-only">kidsvideos.io <span>beta</span></h1>
+    <div class="object">
+        <div class="object-clone">
+            <img alt="kidsvideos.io" src="_shared/images/kidsvideos.io_logo-white-beta.svg"
+                 onerror="this.src='images/kidsvideos.io_logo-white-beta.png'"/>
+        </div>
+        <div class="orbit orbit-0">
+            <span></span>
+        </div>
+        <div class="orbit orbit-1">
+            <span></span>
+        </div>
+        <div class="orbit orbit-2">
+            <span></span>
+        </div>
+        <div class="orbit orbit-3">
+            <span></span>
+        </div>
+    </div>
+
+</section>
+
+<footer class="footer-content">
+    <ul class="">
+        <li>&copy; 2014</li>
+    </ul>
+</footer>
 
 
 </body>
