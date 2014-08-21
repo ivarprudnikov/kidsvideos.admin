@@ -166,7 +166,8 @@ module.exports = function (grunt) {
       all     : [
         'Gruntfile.js',
         '<%= yeoman.app %>/apps/**/*.js',
-        '!<%= yeoman.app %>/**/<%= yeoman.tplsFile %>'
+        '!<%= yeoman.app %>/**/<%= yeoman.tplsFile %>',
+        '!<%= yeoman.app %>/**/<%= yeoman.cfgFile %>'
       ]
     },
 
@@ -177,7 +178,8 @@ module.exports = function (grunt) {
       all     : [
         'Gruntfile.js',
         '<%= yeoman.app %>/apps/**/*.js',
-        '!<%= yeoman.app %>/**/<%= yeoman.tplsFile %>'
+        '!<%= yeoman.app %>/**/<%= yeoman.tplsFile %>',
+        '!<%= yeoman.app %>/**/<%= yeoman.cfgFile %>'
       ]
     },
 
