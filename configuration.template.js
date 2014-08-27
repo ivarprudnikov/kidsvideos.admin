@@ -26,7 +26,8 @@
       private: {
         path: '/api/v1/admin',
         videoSearch: '@@apiUrl/api/v1/admin/search/video',
-        videoShow: '@@apiUrl/api/v1/admin/video'
+        videoShow: '@@apiUrl/api/v1/admin/video',
+        stats: '@@apiUrl/api/v1/admin/stats'
       }
     }
   });

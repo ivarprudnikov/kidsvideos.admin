@@ -77,6 +77,10 @@ module.exports = function (grunt) {
         files : ['<%= yeoman.app %>/apps/**/*.less'],
         tasks : ['less', 'copy:styles', 'autoprefixer']
       },
+      ngTemplates     : {
+        files : ['<%= yeoman.app %>/apps/**/*.html'],
+        tasks : ['ngtemplates']
+      },
       livereload : {
         options : {
           livereload : LIVERELOAD_PORT
