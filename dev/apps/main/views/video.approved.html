@@ -23,7 +23,12 @@
                         title="results.items[itemIdx+elIdx].displayName"
                         on-title-click="previewVideo(results.items[itemIdx+elIdx].id)"
                         status="results.items[itemIdx+elIdx].isApproved ? 'approved' : results.items[itemIdx+elIdx].isSkipped ? 'skipped' : results.items[itemIdx+elIdx].isPending ? 'pending' : '' "
-                        actions="{'Set approved':'setApproved(itemIdx+elIdx)','Set skipped':'setSkipped(itemIdx+elIdx)', 'Set pending':'setPending(itemIdx+elIdx)'}"
+                        actions="{
+                            'Set approved':'setApproved(itemIdx+elIdx)',
+                            'Set skipped':'setSkipped(itemIdx+elIdx)',
+                            'Set pending':'setPending(itemIdx+elIdx)',
+                            'Add to ...' : 'addTo(itemIdx+elIdx)'
+                        }"
                         ></result-small>
 
             </div>

@@ -2,7 +2,14 @@
 
 angular.module(
   'io.kidsvideos.admin.main', [
-    'com.ivarprudnikov.ng.config', 'com.ivarprudnikov.ng.youtube', 'com.ivarprudnikov.ng.validation', 'com.ivarprudnikov.ng.search', 'com.ivarprudnikov.ng.auth', 'ui.router', 'ui.bootstrap', 'ngResource', 'ngAnimate', 'ui.keypress', 'ui.event', 'ngTouch', 'appTemplates'
+    'com.ivarprudnikov.ng.config',
+  'com.ivarprudnikov.ng.youtube',
+  'com.ivarprudnikov.ng.validation',
+  'com.ivarprudnikov.ng.search',
+  'com.ivarprudnikov.ng.auth',
+'com.ivarprudnikov.ng.data',
+'com.ivarprudnikov.ng.video.manage',
+  'ui.router', 'ui.bootstrap', 'ngResource', 'ngAnimate', 'ui.keypress', 'ui.event', 'ngTouch', 'appTemplates'
   ]
 ).run(
   function ($rootScope, $timeout, $window, $location, authService, $urlRouter, configuration) {
