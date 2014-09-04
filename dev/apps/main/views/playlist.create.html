@@ -17,7 +17,7 @@
             >
                 <label for="title">Title</label>
                 <input type="text" required ng-model="playlist.title" class="form-control" id="title" name="title" placeholder="eg: Dora explorer colection" >
-                <span class="help-block" ng-show="rc.playlistform.needsAttention(playlistform.email) && rc.playlistform.attempted">
+                <span class="help-block" ng-show="rc.playlistform.needsAttention(playlistform.title) && rc.playlistform.attempted">
                     Please provide valid title
                 </span>
             </div>

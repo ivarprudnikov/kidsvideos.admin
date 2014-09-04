@@ -21,6 +21,7 @@
           };
 
           this.needsAttention = function (fieldModelController) {
+
             if (!formController) {
               return false;
             }

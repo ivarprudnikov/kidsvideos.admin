@@ -65,7 +65,7 @@
 
       setActivitySkipped : function (videoActivityObj, cb) {
 
-        var item = videoActivityObj || {}, params = { id : item.id, provider : 'youtube'}, img = item.image && item.image.length ? item.image[item.image.length - 1].url : null, postBody = { title : item.displayName }, props = ['isApproved', 'isSkipped', 'isPending'];
+        var item = videoActivityObj || {}, params = { id : item.id, provider : 'youtube'}, img = item.image && item.image.length ? item.image[item.image.length - 1].url : null, postBody = { title : item.displayName }, props = ['_id','isApproved', 'isSkipped', 'isPending'];
 
         if (item == null) {
           return cb('Video object is missing');
@@ -93,7 +93,7 @@
 
       setActivityApproved : function (videoActivityObj, cb) {
 
-        var item = videoActivityObj || {}, params = { id : item.id, provider : 'youtube'}, img = item.image && item.image.length ? item.image[item.image.length - 1].url : null, postBody = { title : item.displayName }, props = ['isApproved', 'isSkipped', 'isPending'];
+        var item = videoActivityObj || {}, params = { id : item.id, provider : 'youtube'}, img = item.image && item.image.length ? item.image[item.image.length - 1].url : null, postBody = { title : item.displayName }, props = ['_id','isApproved', 'isSkipped', 'isPending'];
 
         if (item == null) {
           return cb('Video object is missing');
@@ -121,7 +121,7 @@
 
       setActivityPending : function (videoActivityObj, cb) {
 
-        var item = videoActivityObj || {}, params = { id : item.id, provider : 'youtube'}, img = item.image && item.image.length ? item.image[item.image.length - 1].url : null, postBody = { title : item.displayName }, props = ['isApproved', 'isSkipped', 'isPending'];
+        var item = videoActivityObj || {}, params = { id : item.id, provider : 'youtube'}, img = item.image && item.image.length ? item.image[item.image.length - 1].url : null, postBody = { title : item.displayName }, props = ['_id','isApproved', 'isSkipped', 'isPending'];
 
         if (item == null) {
           return cb('Video object is missing');

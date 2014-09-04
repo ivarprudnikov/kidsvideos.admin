@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('io.kidsvideos.admin.main')
-  .controller('SkippedVideosController', ['VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
-    function (VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams) {
+  .controller('SkippedVideosController', ['ManageVideoService', 'VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
+    function (ManageVideoService, VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams) {
 
       var
         messageInterval = null,
@@ -114,6 +114,11 @@ angular.module('io.kidsvideos.admin.main')
 
       $scope.previewVideo = function (id) {
         $state.go('video.search.result', {id : id});
+      };
+
+      $scope.addTo = function(itemIdx){
+        var item = $scope.results.items[itemIdx];
+        ManageVideoService.addVideo(item)
       };
 
       $scope.$on('$destroy', function () {
