@@ -53,6 +53,17 @@ angular.module('io.kidsvideos.admin.main')
         }
       }
 
+      $scope.removeFromPlaylist = function(itemIdx){
+        var video = $scope.playlist.videos[itemIdx];
+        var queryParams = {id : $scope.playlist._id};
+        var postData = {videoId : video._id};
+        PlaylistFactory.removeVideo(queryParams, postData, function (responseData, responseHeaders) {
+          loadPlaylist();
+        }, function (err) {
+          $scope.loadingMessage = err;
+        });
+      };
+
       $scope.$on('$destroy', function () {
       });
 

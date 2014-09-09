@@ -16,7 +16,8 @@
       save : { method : 'POST', params : {action : 'save'} },
       update : { method : 'POST', params : {action : 'update', id : '@_id'} },
       delete : { method : 'POST', params : {action : 'delete', id : '@_id'} },
-      addVideo : { method : 'POST', params : {action : 'addVideo'} }
+      addVideo : { method : 'POST', params : {action : 'addVideo'} },
+      removeVideo : { method : 'POST', params : {action : 'removeVideo'} }
     });
 
   }]);
