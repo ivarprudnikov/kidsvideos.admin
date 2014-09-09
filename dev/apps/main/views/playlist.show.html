@@ -11,7 +11,28 @@
     <div ng-if="playlist">
         <p class="lead" ng-if="playlist.description">{{playlist.description}}</p>
         <div ng-if="playlist.videos && playlist.videos.length">
-            Videos OOOOOooooo
+
+            <div class="row" ng-repeat="(itemIdx,item) in playlist.videos" ng-if="itemIdx % 4 == 0">
+
+                <div class="col-sm-3" ng-repeat="elIdx in [0,1,2,3]" ng-if="playlist.videos[itemIdx+elIdx]">
+
+                    <result-small
+                            image-url="playlist.videos[itemIdx+elIdx].imageUrl"
+                            on-image-click="previewVideo(playlist.videos[itemIdx+elIdx].id)"
+                            title="playlist.videos[itemIdx+elIdx].title"
+                            on-title-click="previewVideo(playlist.videos[itemIdx+elIdx].id)"
+                            status="playlist.videos[itemIdx+elIdx].isApproved ? 'approved' : playlist.videos[itemIdx+elIdx].isSkipped ? 'skipped' : playlist.videos[itemIdx+elIdx].isPending ? 'pending' : '' "
+                            actions="{
+                            'Move':'setApproved(itemIdx+elIdx)',
+                            'Copy':'setSkipped(itemIdx+elIdx)',
+                            'Remove':'setPending(itemIdx+elIdx)'
+                        }"
+                            ></result-small>
+
+                </div>
+
+            </div>
+
         </div>
         <div ng-if="!playlist.videos || !playlist.videos.length">
             No videos found

@@ -74,6 +74,22 @@ angular.module('io.kidsvideos.admin.main')
 
       };
 
+      $scope.delete = function (formController) {
+
+        $scope.submittingData = true;
+
+        var playlistClone = _.clone($scope.playlist);
+
+        PlaylistFactory.delete({id:playlistClone._id}, null, function () {
+          $scope.submittingData = false;
+          $state.go('^.list');
+        }, function () {
+          $scope.submittingData = false;
+          alert('Error occured');
+        });
+
+      };
+
       $scope.$on('$destroy', function () {
       });
 
