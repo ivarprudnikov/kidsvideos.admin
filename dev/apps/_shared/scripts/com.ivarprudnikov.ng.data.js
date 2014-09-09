@@ -62,6 +62,8 @@
 
   mod.factory('YoutubeVideoActivityFactory', ['VideoFactory', '$timeout', function (VideoFactory, $timeout) {
 
+    /* jshint eqeqeq:false,eqnull:true */
+
     return {
 
       setActivitySkipped : function (videoActivityObj, cb) {

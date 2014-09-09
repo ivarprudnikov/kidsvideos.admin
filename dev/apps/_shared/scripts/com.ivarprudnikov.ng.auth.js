@@ -47,7 +47,7 @@
           promise.reject();
           promise = null;
         }
-        alert("Connection error");
+        $window.alert('Connection error');
       },
 
       login : function (options) {
@@ -224,7 +224,7 @@
             });
           }, function (errorObj) {
             console.log('getAvailableProviders errorObj', errorObj);
-            errorHandler("Could not load authentication providers.");
+            errorHandler('Could not load authentication providers.');
           });
         }
 
@@ -236,15 +236,15 @@
             });
           }, function (errorObj) {
             console.log('formLoginPath errorObj', errorObj);
-            errorHandler("Could not load authentication form.");
+            errorHandler('Could not load authentication form.');
           });
         }
 
       },
       message: function (msg,origin) {
-        console.log("msg",msg)
-        console.log("origin",origin)
-        errorHandler("Could not connect to authentication server");
+        console.log('msg',msg);
+        console.log('origin',origin);
+        errorHandler('Could not connect to authentication server');
       }
     }, {
       local : {
@@ -271,7 +271,7 @@
           auth.proxy.open(providerName, auth.winName);
         }, 300);
       } else {
-        errorHandler("Could not open authentication popup.");
+        errorHandler('Could not open authentication popup.');
       }
     };
 
@@ -293,7 +293,7 @@
           onAuthSuccess(data.token);
         }).error(function (data, status, headers, config) {
           $scope.inProgress = false;
-          errorHandler("Authentication failed.");
+          errorHandler('Authentication failed.');
         });
       }
     };
@@ -321,7 +321,7 @@
             $rootScope.$broadcast('event:auth-loginRequired', rejection);
             return deferred.promise;
           }
-          if(rejection.status == 0) {
+          if(rejection.status === 0) {
             $rootScope.$broadcast('event:auth-error', rejection);
             return;
           }

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('io.kidsvideos.admin.main')
-  .controller('PlaylistEditController', ['$interval', '$scope', '$state', '$stateParams', 'PlaylistFactory',
-    function ($interval, $scope, $state, $stateParams, PlaylistFactory) {
+  .controller('PlaylistEditController', ['$window', '$interval', '$scope', '$state', '$stateParams', 'PlaylistFactory',
+    function ($window, $interval, $scope, $state, $stateParams, PlaylistFactory) {
 
       var messageInterval = null,
         msg0 = 'Loading playlist',
@@ -85,7 +85,7 @@ angular.module('io.kidsvideos.admin.main')
           $state.go('^.list');
         }, function () {
           $scope.submittingData = false;
-          alert('Error occured');
+          $window.alert('Error occured');
         });
 
       };

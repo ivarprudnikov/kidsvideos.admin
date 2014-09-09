@@ -111,7 +111,7 @@ angular.module('io.kidsvideos.admin.main')
 
       $scope.addTo = function(itemIdx){
         var item = $scope.results.items[itemIdx];
-        ManageVideoService.addVideo(item)
+        ManageVideoService.addVideo(item);
       };
 
       $scope.$on('$destroy', function () {

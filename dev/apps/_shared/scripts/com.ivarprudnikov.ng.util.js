@@ -13,11 +13,11 @@
         if (this === (function () {
           return this;
         })()) {
-          throw new Error("forgot to initialize me");
+          throw new Error('forgot to initialize me');
         } else if(!scopeObj){
-          throw new Error("scopeObj required");
+          throw new Error('scopeObj required');
         } else if(!msgVar){
-          throw new Error("msgVar required");
+          throw new Error('msgVar required');
         }
 
         this.scopeObj = scopeObj;
