@@ -6,7 +6,9 @@
 
   var mod = angular.module('com.ivarprudnikov.ng.util', []);
 
-  mod.factory('Loader',['$interval',function($interval){
+  mod.factory(
+  'Loader', [
+    '$interval', function ($interval) {
 
       function Loader(scopeObj, msgVar) {
 
@@ -14,9 +16,9 @@
           return this;
         })()) {
           throw new Error('forgot to initialize me');
-        } else if(!scopeObj){
+        } else if (!scopeObj) {
           throw new Error('scopeObj required');
-        } else if(!msgVar){
+        } else if (!msgVar) {
           throw new Error('msgVar required');
         }
 
@@ -36,7 +38,7 @@
 
         constructor : Loader,
 
-        inProgress: function(){
+        inProgress : function () {
           return !!this.scopeObj[this.msgVar];
         },
 
@@ -44,7 +46,7 @@
 
           var self = this;
 
-          if(self.inProgress()){
+          if (self.inProgress()) {
             return self;
           }
 
@@ -90,7 +92,9 @@
 
       return Loader;
 
-  }]);
+    }
+  ]
+  );
 
 }(angular));
 
