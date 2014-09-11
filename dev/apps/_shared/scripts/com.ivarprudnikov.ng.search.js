@@ -77,6 +77,8 @@
           replace    : true,
           transclude : false,
           scope      : {
+            isGridItem   : '=?',
+            isActive     : '=?',
             imageUrl     : '=',
             title        : '=',
             status       : '=',
@@ -124,6 +126,32 @@
             $scope.dropdownActive = false;
             $scope.imageError = false;
 
+            console.log("$scope.isGridItem",$scope.isGridItem)
+
+            if($scope.isGridItem !== false){
+              $scope.isGridItem = true;
+            }
+            $scope.$watch('isGridItem', function () {
+              if($scope.isGridItem !== false){
+                $scope.isGridItem = true;
+              }
+            });
+
+            if($scope.isActive !== true){
+              $scope.isActive = false;
+            }
+            $scope.$watch('isActive', function () {
+              if($scope.isActive !== true){
+                $scope.isActive = false;
+              }
+            });
+
+
+
+
+
+
+
             // PARSE ATTR ACTIONS
             ///////////////////////////
 
@@ -168,7 +196,7 @@
           }],
 
           template : '' +
-            '<div class="sr-item-sm">' +
+            '<div class="sr-item-sm" ng-class="{\'sr-item-grid\':isGridItem,\'sr-item-list\':!isGridItem,active:isActive}">' +
             '<div class="sr-item-sm-image-wrapper">' +
             '<img ng-src="{{imageUrl}}" ng-attr-alt="title" result-image-preloader ng-class="{clickable:onImageClick}" ng-click="clickImage()"/>' +
             '<div class="sr-item-sm-image" ng-class="{clickable:onImageClick}" ng-click="clickImage()" ng-style="{\'background-image\': \'url(\' + imageUrl + \')\'}"></div>' +

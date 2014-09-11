@@ -4,8 +4,19 @@
   position: relative;
   width: 100%;
   margin-bottom: 30px;
+  border:1px solid transparent;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
+
+  &.sr-item-list {
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    .clearfix();
+  }
+
+  &.active {
+    border-color: #888;
+  }
 
   &:hover {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -17,6 +28,7 @@
     width: 100%;
     height: 140px;
     background-color: #eee;
+    transition: all 0.3s ease;
 
     img {
       display: block;
@@ -27,6 +39,7 @@
       max-width: 100%;
       max-height: 100%;
       margin: 0 auto;
+      transition: all 0.3s ease;
 
       &.clickable {
         cursor: pointer;
@@ -43,6 +56,7 @@
       right: 0;
       bottom: 0;
       left: 0;
+      transition: all 0.3s ease;
 
       background-color: transparent;
       background-size: cover;
@@ -77,6 +91,7 @@
       z-index: 20;
       background-color: rgba(0, 0, 0, 0.2);
       border-radius: 50%;
+      transition: all 0.3s ease;
 
       .icon {
         display: block;
@@ -86,9 +101,30 @@
         color: #fff;
         line-height: 40px;
         font-size: 20px;
+        transition: all 0.3s ease;
       }
     }
 
+  }
+
+  &.sr-item-list .sr-item-sm-image-wrapper {
+    width: 80px;
+    height: 80px;
+    float: left;
+
+    .sr-item-sm-status {
+      top: 5px;
+      left: 5px;
+      width: 30px;
+      height: 30px;
+
+      .icon {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 15px;
+      }
+    }
   }
 
   .sr-item-sm-caption-wrapper {
@@ -100,6 +136,7 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    transition: all 0.3s ease;
 
     .sr-item-sm-caption {
       display: block;
@@ -112,6 +149,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       color: #888;
+      transition: all 0.3s ease;
 
       &.clickable {
 
@@ -133,6 +171,7 @@
       width: 50px;
       height: 50px;
       background-color: #F5f5f5;
+      transition: all 0.3s ease;
     }
 
     .sr-item-sm-actions-dropdown-trigger {
@@ -187,6 +226,24 @@
       }
     }
 
+  }
+
+  &.sr-item-list .sr-item-sm-caption-wrapper {
+    margin-left: 80px;
+    height: auto;
+    width: auto;
+
+    .sr-item-sm-caption {
+      line-height: 1.3;
+      height: auto;
+      text-overflow: initial;
+      white-space: normal;
+      padding: 15px;
+    }
+
+    .sr-item-sm-actions {
+      background-color: transparent;
+    }
   }
 
   .sr-item-sm-image-loader {
