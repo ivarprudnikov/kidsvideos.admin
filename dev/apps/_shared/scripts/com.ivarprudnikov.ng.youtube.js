@@ -382,7 +382,7 @@
 
               if ((!oldValue && newValue) || (newValue != null && newValue === oldValue)) {
                 buildPlayer();
-              } else if ( oldValue != null && newValue != null && newValue !== oldValue) {
+              } else if (oldValue != null && newValue != null && newValue !== oldValue) {
                 $scope.player.loadVideoById(newValue);
               }
             });

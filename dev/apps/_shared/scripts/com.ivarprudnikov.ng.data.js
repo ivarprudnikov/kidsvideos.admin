@@ -40,19 +40,7 @@
         setPending : { method : 'POST', params : {action : 'pending'} }
       }),
 
-      search : $resource(configuration.api.private.videoSearch + '/:query/:token', {}, {
-        getAll : { method : 'GET', cache : false }
-      }),
-
-      skipped : $resource(configuration.api.public.videoSkipped, {}, {
-        getAll : { method : 'GET', cache : false }
-      }),
-
-      pending : $resource(configuration.api.public.videoPending, {}, {
-        getAll : { method : 'GET', cache : false }
-      }),
-
-      approved : $resource(configuration.api.public.videoApproved, {}, {
+      search : $resource(configuration.api.public.videoSearch, {}, {
         getAll : { method : 'GET', cache : false }
       })
 

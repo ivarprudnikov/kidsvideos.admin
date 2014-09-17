@@ -75,51 +75,11 @@ function ($rootScope, $timeout, $window, $location, authService, $urlRouter, con
     }
     ).state(
     'video.search', {
-      url   : '/search?q&t',
+      url   : '/search?search_term&token&max&offset&type',
       views : {
         'main@' : {
           templateUrl : APP_PATH + 'views/video.search.html',
           controller  : 'VideoController'
-        }
-      }
-    }
-    ).state(
-    'video.approved', {
-      url   : '/approved?max&offset',
-      views : {
-        'main@' : {
-          templateUrl : APP_PATH + 'views/video.approved.html',
-          controller  : 'ApprovedVideosController'
-        }
-      }
-    }
-    ).state(
-    'video.pending', {
-      url   : '/pending?max&offset',
-      views : {
-        'main@' : {
-          templateUrl : APP_PATH + 'views/video.pending.html',
-          controller  : 'PendingVideosController'
-        }
-      }
-    }
-    ).state(
-    'video.skipped', {
-      url   : '/skipped?max&offset',
-      views : {
-        'main@' : {
-          templateUrl : APP_PATH + 'views/video.skipped.html',
-          controller  : 'SkippedVideosController'
-        }
-      }
-    }
-    ).state(
-    'video.search.result', {
-      url   : '/result/:id',
-      views : {
-        'main@' : {
-          templateUrl : APP_PATH + 'views/video.preview.html',
-          controller  : 'VideoPreviewController'
         }
       }
     }

@@ -3,14 +3,10 @@
 /* jshint eqeqeq:false,eqnull:true */
 
 angular.module('io.kidsvideos.admin.main')
-  .controller('PlaylistListController', ['$scope', '$state', '$stateParams', '$interval', 'PlaylistFactory',
-    function ($scope, $state, $stateParams, $interval, PlaylistFactory) {
+  .controller('PlaylistListController', ['$scope', '$state', '$stateParams', '$interval', 'PlaylistFactory', 'Loader',
+    function ($scope, $state, $stateParams, $interval, PlaylistFactory, Loader) {
 
-      var messageInterval = null,
-        msg0 = 'Loading results',
-        msg1 = 'Still loading',
-        msg2 = 'Takes longer than usual',
-        msgErr = 'Error occured while loading search results';
+      var loader = new Loader($scope, 'loadingMessage');
 
       $scope.availableSorts = [
         { name : 'Date created', value : 'dateCreated' },
@@ -57,36 +53,14 @@ angular.module('io.kidsvideos.admin.main')
         user       : $stateParams.user === 'true'
       };
 
-      $scope.loadingMessage = '';
       $scope.results = null;
 
       $scope.$watch($stateParams, function () {
         searchForResults();
       });
 
-      function stopMessageInterval() {
-        if (angular.isDefined(messageInterval)) {
-          $scope.loadingMessage = '';
-          $interval.cancel(messageInterval);
-        }
-      }
-
-      function startLoadingMessage() {
-        $scope.loadingMessage = msg0;
-        messageInterval = $interval(function () {
-          if ($scope.loadingMessage === msg0) {
-            $scope.loadingMessage = msg1;
-          } else if ($scope.loadingMessage === msg1) {
-            $scope.loadingMessage = msg2;
-          } else {
-            $scope.loadingMessage += '.';
-          }
-        }, 7000);
-      }
-
       function errorHandler(httpResponse) {
-        stopMessageInterval();
-        $scope.loadingMessage = msgErr;
+        loader.error(httpResponse);
       }
 
       // select fields that are not null/undefined only
@@ -100,10 +74,9 @@ angular.module('io.kidsvideos.admin.main')
       }
 
       function searchForResults() {
-        startLoadingMessage();
-
+        loader.start();
         $scope.results = PlaylistFactory.list(selectedSearchOptions(), null, function (responseData, responseHeaders) {
-          stopMessageInterval();
+          loader.stop();
         }, errorHandler);
       }
 

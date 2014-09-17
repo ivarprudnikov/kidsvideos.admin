@@ -4,19 +4,33 @@ angular.module('io.kidsvideos.admin.main')
 .controller(
 'VideoController',
 [
-  'ManageVideoService', 'VideoFactory', 'YoutubeVideoActivityFactory', '$scope', '$interval', '$state', '$stateParams',
-  function (ManageVideoService, VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams) {
+  'ManageVideoService',
+  'VideoFactory',
+  'YoutubeVideoActivityFactory',
+  '$scope',
+  '$interval',
+  '$state',
+  '$stateParams',
+  'Loader',
+  function (ManageVideoService, VideoFactory, YoutubeVideoActivityFactory, $scope, $interval, $state, $stateParams,
+  Loader) {
 
-    var messageInterval = null,
-        msg0 = 'Loading search results',
-        msg1 = 'Still loading',
-        msg2 = 'Takes longer than usual',
-        msgErr = 'Error occured while loading search results';
+    var loader = new Loader($scope, 'loadingMessage');
+    $scope.types = {
+      APPROVED : { name : 'Approved', key : 'APPROVED' },
+      PENDING  : { name : 'Pending', key : 'PENDING' },
+      SKIPPED  : { name : 'Skipped', key : 'SKIPPED' },
+      YOUTUBE  : { name : 'Youtube', key : 'YOUTUBE' }
+    };
 
-    $scope.q = $stateParams.q || '';
-    $scope.t = $stateParams.t || '';
+    /* jshint camelcase:false */
 
-    $scope.loadingMessage = '';
+    $scope.params = {};
+    $scope.params.search_term = $stateParams.search_term || '';
+    $scope.params.token = $stateParams.token || '';
+    $scope.params.max = $stateParams.max || '';
+    $scope.params.offset = $stateParams.offset || '';
+    $scope.params.type = $scope.types[$stateParams.type] ? $scope.types[$stateParams.type].key : $scope.types.APPROVED.key;
     $scope.results = null;
 
     $scope.$watch(
@@ -25,78 +39,33 @@ angular.module('io.kidsvideos.admin.main')
     }
     );
 
-    function stopMessageInterval() {
-      if (angular.isDefined(messageInterval)) {
-        $scope.loadingMessage = '';
-        $interval.cancel(messageInterval);
-      }
-    }
-
-    function startLoadingMessage() {
-      $scope.loadingMessage = msg0;
-      messageInterval = $interval(
-      function () {
-        if ($scope.loadingMessage === msg0) {
-          $scope.loadingMessage = msg1;
-        } else if ($scope.loadingMessage === msg1) {
-          $scope.loadingMessage = msg2;
-        } else {
-          $scope.loadingMessage += '.';
-        }
-      }, 7000
-      );
-    }
-
     function errorHandler(httpResponse) {
-      stopMessageInterval();
-      $scope.loadingMessage = msgErr;
+      loader.error(httpResponse);
     }
 
     function searchForResults() {
-      if (!$scope.q) {
-        console.log('no query');
-      } else {
-        startLoadingMessage();
-        $scope.results = VideoFactory.search.getAll(
-        {query : $scope.q, token : $scope.t}, null, function (responseData, responseHeaders) {
-          stopMessageInterval();
-        }, errorHandler
-        );
-      }
+      loader.start();
+      VideoFactory.search.getAll(
+      $scope.params, null, function (responseData, responseHeaders) {
+        $scope.results = responseData.data;
+        loader.stop();
+      }, errorHandler
+      );
     }
 
     $scope.search = function () {
-      $state.go($state.$current.name, {q : $scope.q});
+      $state.go($state.$current.name, $scope.params);
     };
 
     $scope.next = function () {
-      var arr, token, params;
       if ($scope.results && $scope.results.links && $scope.results.links.next) {
-
-        arr = $scope.results.links.next.split('/');
-        token = arr[arr.length - 1];
-        params = {q : $scope.q};
-        if (token) {
-          params.t = token;
-        }
-
-        $state.go($state.$current.name, params);
-
+        $state.go($state.$current.name, $scope.results.params.next);
       }
     };
 
     $scope.prev = function () {
-      var arr, token, params;
       if ($scope.results && $scope.results.links && $scope.results.links.prev) {
-
-        arr = $scope.results.links.prev.split('/');
-        token = arr[arr.length - 1];
-        params = {q : $scope.q};
-        if (token) {
-          params.t = token;
-        }
-
-        $state.go($state.$current.name, params);
+        $state.go($state.$current.name, $scope.results.params.prev);
       }
     };
 
@@ -149,13 +118,62 @@ angular.module('io.kidsvideos.admin.main')
     };
 
     $scope.previewVideo = function (id) {
-      $state.go('video.search.result', {id : id});
+      $scope.videoId = id;
     };
 
     $scope.addTo = function (itemIdx) {
       var item = $scope.results.items[itemIdx];
       ManageVideoService.addVideo(item);
     };
+
+    $scope.loadNextId = function (currentlyPlayingId) {
+      setNextVideoId(currentlyPlayingId);
+    };
+    $scope.loadPreviousId = function (currentlyPlayingId) {
+      setPreviousVideoId(currentlyPlayingId);
+    };
+
+    function setNextVideoId(currentId) {
+
+      var lastIdx = $scope.results.items.length - 1;
+      var itemFound = false;
+
+      angular.forEach($scope.results.items, function (val, idx) {
+        if (val && val.id && val.id === currentId) {
+          if (idx === lastIdx) {
+            $scope.videoId = $scope.results.items[0].id;
+          } else {
+            $scope.videoId = $scope.results.items[idx + 1].id;
+          }
+          itemFound = true;
+        }
+      });
+
+      if (!itemFound) {
+        $scope.videoId = $scope.results.items[0].id;
+      }
+    }
+
+    function setPreviousVideoId(currentId) {
+
+      var lastIdx = $scope.results.items.length - 1;
+      var itemFound = false;
+
+      angular.forEach($scope.results.items, function (val, idx) {
+        if (val && val.id && val.id === currentId) {
+          if (idx === 0) {
+            $scope.videoId = $scope.results.items[lastIdx].id;
+          } else {
+            $scope.videoId = $scope.results.items[idx - 1].id;
+          }
+          itemFound = true;
+        }
+      });
+
+      if (!itemFound) {
+        $scope.videoId = $scope.results.items[0].id;
+      }
+    }
 
     $scope.$on(
     '$destroy', function () {

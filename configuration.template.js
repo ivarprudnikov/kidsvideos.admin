@@ -18,9 +18,7 @@
       baseUrl: '@@apiUrl',
       public: {
         path: '/api/v1/client',
-        videoApproved: '@@apiUrl/api/v1/client/video/approved',
-        videoSkipped: '@@apiUrl/api/v1/client/video/skipped',
-        videoPending: '@@apiUrl/api/v1/client/video/pending',
+        videoSearch: '@@apiUrl/api/v1/client/video/search',
         playlistPath: '@@apiUrl/api/v1/client/playlist'
       },
       private: {

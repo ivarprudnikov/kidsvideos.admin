@@ -74,15 +74,14 @@ angular.module('io.kidsvideos.admin.main')
       );
     };
 
-
-    function setNextVideoId(currentId){
+    function setNextVideoId(currentId) {
 
       var lastIdx = $scope.playlist.videos.length - 1;
       var itemFound = false;
 
-      angular.forEach($scope.playlist.videos, function(val,idx){
-        if(val && val.id && val.id === currentId){
-          if(idx === lastIdx){
+      angular.forEach($scope.playlist.videos, function (val, idx) {
+        if (val && val.id && val.id === currentId) {
+          if (idx === lastIdx) {
             $scope.videoId = $scope.playlist.videos[0].id;
           } else {
             $scope.videoId = $scope.playlist.videos[idx + 1].id;
@@ -91,19 +90,19 @@ angular.module('io.kidsvideos.admin.main')
         }
       });
 
-      if(!itemFound){
+      if (!itemFound) {
         $scope.videoId = $scope.playlist.videos[0].id;
       }
     }
 
-    function setPreviousVideoId(currentId){
+    function setPreviousVideoId(currentId) {
 
       var lastIdx = $scope.playlist.videos.length - 1;
       var itemFound = false;
 
-      angular.forEach($scope.playlist.videos, function(val,idx){
-        if(val && val.id && val.id === currentId){
-          if(idx === 0){
+      angular.forEach($scope.playlist.videos, function (val, idx) {
+        if (val && val.id && val.id === currentId) {
+          if (idx === 0) {
             $scope.videoId = $scope.playlist.videos[lastIdx].id;
           } else {
             $scope.videoId = $scope.playlist.videos[idx - 1].id;
@@ -112,18 +111,18 @@ angular.module('io.kidsvideos.admin.main')
         }
       });
 
-      if(!itemFound){
+      if (!itemFound) {
         $scope.videoId = $scope.playlist.videos[0].id;
       }
     }
 
-    $scope.showYoutubeVideo = function(videoId){
+    $scope.showYoutubeVideo = function (videoId) {
       $scope.videoId = videoId;
     };
-    $scope.loadNextId = function(currentlyPlayingId){
+    $scope.loadNextId = function (currentlyPlayingId) {
       setNextVideoId(currentlyPlayingId);
     };
-    $scope.loadPreviousId = function(currentlyPlayingId){
+    $scope.loadPreviousId = function (currentlyPlayingId) {
       setPreviousVideoId(currentlyPlayingId);
     };
 

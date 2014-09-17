@@ -29,20 +29,10 @@
                     <a ui-sref="main.home">Admin</a>
                 </li>
                 <li class="dropdown" ng-if="hasToken()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Videos <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a ui-sref="video.approved">Approved</a></li>
-                        <li><a ui-sref="video.pending">Pending</a></li>
-                        <li><a ui-sref="video.skipped">Skipped</a></li>
-                        <li><a ui-sref="video.search">Search</a></li>
-                    </ul>
+                    <a ui-sref="video.search" class="dropdown-toggle" data-toggle="dropdown">Videos</a>
                 </li>
                 <li class="dropdown" ng-if="hasToken()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Playlists <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a ui-sref="playlist.list">List</a></li>
-                        <li><a ui-sref="playlist.create">Create</a></li>
-                    </ul>
+                    <a ui-sref="playlist.list" class="dropdown-toggle" data-toggle="dropdown">Playlists</a>
                 </li>
                 <li ng-if="!hasToken()">
                     <a href="#">Sign in</a>
@@ -99,10 +89,6 @@
 <script src="scripts/controllers/HomeController.js"></script>
 
 <script src="scripts/controllers/VideoController.js"></script>
-<script src="scripts/controllers/ApprovedVideosController.js"></script>
-<script src="scripts/controllers/PendingVideosController.js"></script>
-<script src="scripts/controllers/SkippedVideosController.js"></script>
-<script src="scripts/controllers/VideoPreviewController.js"></script>
 
 <script src="scripts/controllers/PlaylistListController.js"></script>
 <script src="scripts/controllers/PlaylistShowController.js"></script>

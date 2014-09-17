@@ -28,9 +28,9 @@
   "requireSpacesInConditionalExpression": true,
   "requireSpacesInFunctionDeclaration": { "beforeOpeningCurlyBrace": true },
   "requireSpacesInFunctionExpression": { "beforeOpeningCurlyBrace": true },
-  "requireSpacesInNamedFunctionExpression": { "beforeOpeningCurlyBrace": true },
-  //"requireSpacesInsideObjectBrackets": "allButNested",
-  "validateIndentation": 2
-  //"validateLineBreaks": "LF",
+  "requireSpacesInNamedFunctionExpression": { "beforeOpeningCurlyBrace": true }
+  //"requireSpacesInsideObjectBrackets": "allButNested"
+  //"validateIndentation": 2
+  //"validateLineBreaks": "LF"
   //"validateQuoteMarks": "'"
 }
