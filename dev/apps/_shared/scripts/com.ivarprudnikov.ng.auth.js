@@ -153,11 +153,12 @@
       $templateCache.put(
       'views/login.html',
       '<div class="modal-header">\n' +
-      ' <h3 class="modal-title">Sign in</h3>\n' +
+      ' <button type="button" class="close" ng-click="cancelModal()">&times;</button>' +
+      ' <h4 class="modal-title">Sign in</h4>\n' +
       '</div>\n' +
       '<div class="modal-body">\n' +
       ' <p ng-if="loadingMessage" class="text-warning">{{loadingMessage}}</p>' +
-      ' <form ng-if="formLoginPath" role="form">\n' +
+      ' <form ng-if="formLoginPath" role="form" ng-submit="login()">\n' +
       '   <div class="form-group">\n' +
       '     <label for="username" class="sr-only">Username</label>\n' +
       '     <input ng-disabled="inProgress" type="text" class="form-control" id="username" placeholder="Username" ng-model="user.username">\n' +
@@ -166,13 +167,10 @@
       '     <label for="password" class="sr-only">Password</label>\n' +
       '     <input ng-disabled="inProgress" type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password">\n' +
       '   </div>\n' +
+      '   <button ng-disabled="inProgress" type="submit" class="btn btn-primary btn-block">Login</button>\n' +
       ' </form>\n' +
       ' <p ng-if="providers && providers.length">Please sign in using one of the available providers</p>' +
-      ' <button ng-repeat="p in providers" type="button" class="btn btn-block btn-primary" ng-click="open(p.name)">{{p.name}}</button>\n' +
-      '</div>\n' +
-      '<div class="modal-footer">\n' +
-      ' <button type="button" class="btn btn-link" ng-click="cancelModal()">Cancel</button>' +
-      ' <button ng-if="formLoginPath" ng-disabled="inProgress" type="button" class="btn btn-default" ng-click="login()">Login</button>\n' +
+      ' <button ng-repeat="p in providers" type="button" class="btn btn-block btn-default" ng-click="open(p.name)">{{p.name}}</button>\n' +
       '</div>'
       );
     }
