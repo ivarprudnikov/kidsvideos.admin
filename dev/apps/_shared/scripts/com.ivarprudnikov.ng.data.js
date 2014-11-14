@@ -10,14 +10,23 @@
 
   mod.factory('PlaylistFactory', ['$resource', 'configuration', function ($resource, configuration) {
 
-    return $resource(configuration.api.public.playlistPath + '/:action/:id', {}, {
-      list : { method : 'GET', params : {action : 'list'} },
-      show : { method : 'GET', params : {action : 'show'} },
-      save : { method : 'POST', params : {action : 'save'} },
-      update : { method : 'POST', params : {action : 'update', id : '@_id'} },
-      delete : { method : 'POST', params : {action : 'delete', id : '@_id'} },
+    return $resource(configuration.api.private.playlist + '/:id', {}, {
+      list : { method : 'GET' },
+      show : { method : 'GET', params : {id : '@_id'} },
+      save : { method : 'POST' },
+      update : { method : 'PUT', params : {id : '@_id'} },
+      delete : { method : 'DELETE', params : {id : '@_id'} },
       addVideo : { method : 'POST', params : {action : 'addVideo'} },
       removeVideo : { method : 'POST', params : {action : 'removeVideo'} }
+    });
+
+  }]);
+
+  mod.factory('PlaylistVideoFactory', ['$resource', 'configuration', function ($resource, configuration) {
+
+    return $resource(configuration.api.private.playlist + '/:playlistId/video/:id', {}, {
+      save : { method : 'POST' },
+      delete : { method : 'DELETE', params : {id : '@_id'} }
     });
 
   }]);

@@ -82,13 +82,13 @@
         <div class="col-sm-9">
 
             <div ng-if="results == null" class="alert alert-info">Search for something</div>
-            <div ng-if="results != null && results.items && !results.items.length" class="alert alert-warning">Nothing found
+            <div ng-if="results != null && results.data && !results.data.length" class="alert alert-warning">Nothing found
             </div>
             <div ng-if="loadingMessage" class="alert alert-warning">{{loadingMessage}}</div>
 
-            <div ng-if="results && results.items">
+            <div ng-if="results">
 
-                <div ng-repeat="(itemIdx,item) in results.items">
+                <div ng-repeat="(itemIdx,item) in results.data">
 
                     <div class="panel panel-default">
                         <div class="panel-heading">

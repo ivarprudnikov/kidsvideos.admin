@@ -20,12 +20,12 @@ angular.module('io.kidsvideos.admin.main')
 
         var playlistClone = _.clone($scope.playlist);
 
-        PlaylistFactory.save({}, playlistClone, function (palylistInstance) {
+        PlaylistFactory.save({}, playlistClone, function (responseData) {
           $scope.playlist = _.clone(playlistDefaults);
           $scope.playlistform.$setPristine();
           $scope.submittingData = false;
 
-          $state.go('^.show', {id : palylistInstance._id});
+          $state.go('^.show', {id : responseData.data._id});
 
         }, function () {
           $scope.submittingData = false;
