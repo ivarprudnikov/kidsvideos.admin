@@ -62,12 +62,12 @@ angular.module('io.kidsvideos.admin.main')
 
         var playlistClone = _.clone($scope.playlist);
 
-        PlaylistFactory.update({}, playlistClone, function (palylistInstance) {
-          $scope.playlist = _.clone(palylistInstance);
+        PlaylistFactory.update({}, playlistClone, function (responseData) {
+          $scope.playlist = _.clone(responseData.data);
           $scope.playlistform.$setPristine();
           $scope.submittingData = false;
 
-          $state.go('^.show', {id : palylistInstance._id});
+          $state.go('^.show', {id : responseData.data._id});
         }, function () {
           $scope.submittingData = false;
           console.error('Error occured');
