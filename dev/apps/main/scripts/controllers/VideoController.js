@@ -47,7 +47,7 @@ angular.module('io.kidsvideos.admin.main')
       loader.start();
       VideoFactory.search.getAll(
       $scope.params, null, function (responseData, responseHeaders) {
-        $scope.results = responseData.data;
+        $scope.results = responseData;
         loader.stop();
       }, errorHandler
       );

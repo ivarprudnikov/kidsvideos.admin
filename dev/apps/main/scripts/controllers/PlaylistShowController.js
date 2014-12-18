@@ -3,8 +3,8 @@
 angular.module('io.kidsvideos.admin.main')
 .controller(
 'PlaylistShowController', [
-  '$scope', '$state', '$stateParams', '$interval', 'PlaylistFactory',
-  function ($scope, $state, $stateParams, $interval, PlaylistFactory) {
+  '$scope', '$state', '$stateParams', '$interval', 'PlaylistFactory', 'PlaylistVideoFactory',
+  function ($scope, $state, $stateParams, $interval, PlaylistFactory, PlaylistVideoFactory) {
 
     var messageInterval = null,
         msg0 = 'Loading playlist',
@@ -63,10 +63,9 @@ angular.module('io.kidsvideos.admin.main')
 
     $scope.removeFromPlaylist = function (itemIdx) {
       var video = $scope.playlist.videos[itemIdx];
-      var queryParams = {id : $scope.playlist._id};
-      var postData = {videoId : video._id};
-      PlaylistFactory.removeVideo(
-      queryParams, postData, function (responseData, responseHeaders) {
+      var queryParams = {playlistId : $scope.playlist._id, id: video._id};
+      PlaylistVideoFactory.delete(
+      queryParams, null, function (responseData, responseHeaders) {
         loadPlaylist();
       }, function (err) {
         $scope.loadingMessage = err;

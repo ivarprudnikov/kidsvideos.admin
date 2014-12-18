@@ -150,9 +150,9 @@
   mod.controller(
   'AddVideoModalController', [
     '$window', '$timeout', '$interval', '$scope', '$modalInstance', 'configuration', 'videoActivity',
-    'YoutubeVideoActivityFactory', 'PlaylistFactory', 'Loader', '$q',
+    'YoutubeVideoActivityFactory', 'PlaylistFactory', 'PlaylistVideoFactory', 'Loader', '$q',
     function ($window, $timeout, $interval, $scope, $modalInstance, configuration, videoActivity,
-    YoutubeVideoActivityFactory, PlaylistFactory, Loader, $q) {
+    YoutubeVideoActivityFactory, PlaylistFactory, PlaylistVideoFactory, Loader, $q) {
 
       var loader = new Loader($scope, 'loadingMessage').start();
       var playlistDefaults = {
@@ -200,7 +200,7 @@
         var deferred = $q.defer();
         PlaylistFactory.list(
         {user : true}, null, function (responseData, responseHeaders) {
-          deferred.resolve(responseData.items);
+          deferred.resolve(responseData.data);
         }, function (err) {
           deferred.reject(err);
         }
@@ -265,9 +265,9 @@
       };
 
       $scope.addVideo = function () {
-        var queryParams = {id : $scope.forms.video.playlist._id};
+        var queryParams = {playlistId : $scope.forms.video.playlist._id};
         var postData = {videoId : $scope.video._id};
-        PlaylistFactory.addVideo(
+        PlaylistVideoFactory.save(
         queryParams, postData, function (responseData, responseHeaders) {
           $modalInstance.close(responseData);
         }, function (err) {

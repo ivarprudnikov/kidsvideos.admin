@@ -10,21 +10,19 @@
 
   mod.factory('PlaylistFactory', ['$resource', 'configuration', function ($resource, configuration) {
 
-    return $resource(configuration.api.private.playlist + '/:id', {}, {
+    return $resource(configuration.api.admin.playlist + '/:id', {}, {
       list : { method : 'GET' },
       show : { method : 'GET', params : {id : '@_id'} },
       save : { method : 'POST' },
       update : { method : 'PUT', params : {id : '@_id'} },
-      delete : { method : 'DELETE', params : {id : '@_id'} },
-      addVideo : { method : 'POST', params : {action : 'addVideo'} },
-      removeVideo : { method : 'POST', params : {action : 'removeVideo'} }
+      delete : { method : 'DELETE', params : {id : '@_id'} }
     });
 
   }]);
 
   mod.factory('PlaylistVideoFactory', ['$resource', 'configuration', function ($resource, configuration) {
 
-    return $resource(configuration.api.private.playlist + '/:playlistId/video/:id', {}, {
+    return $resource(configuration.api.admin.playlist + '/:playlistId/video/:id', {}, {
       save : { method : 'POST' },
       delete : { method : 'DELETE', params : {id : '@_id'} }
     });
@@ -33,7 +31,7 @@
 
   mod.factory('StatisticsFactory', ['$resource', 'configuration', function ($resource, configuration) {
 
-    return $resource(configuration.api.private.stats, {}, {
+    return $resource(configuration.api.admin.stats, {}, {
       getAll : { method : 'GET', cache : false }
     });
 
@@ -43,13 +41,13 @@
 
     return {
 
-      item : $resource(configuration.api.private.videoShow + '/:action/:provider/:id', {}, {
+      item : $resource(configuration.api.admin.video + '/:action/:provider/:id', {}, {
         setApproved : { method : 'POST', params : {action : 'approved'} },
         setSkipped : { method : 'POST', params : {action : 'skipped'} },
         setPending : { method : 'POST', params : {action : 'pending'} }
       }),
 
-      search : $resource(configuration.api.public.videoSearch, {}, {
+      search : $resource(configuration.api.admin.search, {}, {
         getAll : { method : 'GET', cache : false }
       })
 

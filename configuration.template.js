@@ -17,15 +17,15 @@
     api: {
       baseUrl: '@@apiUrl',
       public: {
-        path: '/api/v1/client',
-        videoSearch: '@@apiUrl/api/v1/client/video/search'
+        path: '/api/v1/user/guest',
+        videoSearch: '@@apiUrl/api/v1/user/guest/video/search'
       },
-      private: {
-        path: '/api/v1/admin',
+      admin: {
+        path: '/api/v1/user/admin',
         playlist: '@@apiUrl/api/v1/user/admin/playlist',
-        videoSearch: '@@apiUrl/api/v1/admin/search/video',
-        videoShow: '@@apiUrl/api/v1/admin/video',
-        stats: '@@apiUrl/api/v1/admin/stats'
+        search: '@@apiUrl/api/v1/user/admin/search',
+        video: '@@apiUrl/api/v1/user/admin/video',
+        stats: '@@apiUrl/api/v1/user/admin/stats'
       }
     }
   });
