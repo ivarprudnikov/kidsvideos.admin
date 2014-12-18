@@ -53,7 +53,7 @@ angular.module('io.kidsvideos.admin.main')
     function loadPlaylist() {
       if ($scope.id) {
         startLoadingMessage();
-        PlaylistFactory.show( {id : $scope.id}, null, function (responseData, responseHeaders) {
+        PlaylistFactory.show({id : $scope.id}, null, function (responseData, responseHeaders) {
                                 $scope.playlist = responseData.data;
                                   stopMessageInterval();
         }, errorHandler

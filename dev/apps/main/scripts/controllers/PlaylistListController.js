@@ -76,7 +76,7 @@ angular.module('io.kidsvideos.admin.main')
       function searchForResults() {
         loader.start();
         PlaylistFactory.list(selectedSearchOptions(), null, function (responseData, responseHeaders) {
-          $scope.results = responseData
+          $scope.results = responseData;
           loader.stop();
         }, errorHandler);
       }

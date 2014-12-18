@@ -18,7 +18,7 @@ angular.module('io.kidsvideos.admin.main')
                       'playlistsTotal'];
 
 
-           angular.forEach(fields,function(f){
+           angular.forEach(fields,function (f) {
              $scope[f] = responseData.data[f];
            });
 
